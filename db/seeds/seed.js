@@ -14,4 +14,7 @@ exports.seed = function (knex) {
   .then(() => {
     return knex('topics').insert(topicData).returning('*')
   })
+  .then(() => {
+    return knex('users').insert(userData).returning('*')
+  })
 };
