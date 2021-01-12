@@ -1,19 +1,21 @@
 // extract any functions you are using to manipulate your data, into this file
 
-exports.formatArticle = (data) => {
+formatTimestamp = (data) => {
   const finalArr = [];
 
   if (data.length) {
-    data.forEach((article) => {
-      const articleCopy = { ...article };
-      const newDate = new Date(articleCopy.created_at);
-      articleCopy.created_at = newDate;
-      finalArr.push(articleCopy);
+    data.forEach((element) => {
+      const elementCopy = { ...element };
+      const newDate = new Date(elementCopy.created_at);
+      elementCopy.created_at = newDate;
+      finalArr.push(elementCopy);
     });
   }
   return finalArr;
 };
 
-exports.formatComment = () => {
-  return [];
+formatComment = (data) => {
+  return formatTimestamp(data);
 };
+
+module.exports = { formatTimestamp, formatComment };

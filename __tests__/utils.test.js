@@ -1,11 +1,11 @@
 const {
-  formatArticle,
+  formatTimestamp,
   formatComment
 } = require('../db/utils/data-manipulation.js');
 
-describe('formatArticle', () => {
+describe('formatTimestamp', () => {
   it('returns an empty array when passed an empty array', () => {
-    expect(formatArticle([])).toEqual([]);
+    expect(formatTimestamp([])).toEqual([]);
   });
 
   it('returns an object with timestamp formated to JS Date object', () => {
@@ -29,7 +29,7 @@ describe('formatArticle', () => {
         created_at: new Date('2016-08-18T12:07:52.389Z')
       }
     ];
-    expect(formatArticle(input)).toEqual(output);
+    expect(formatTimestamp(input)).toEqual(output);
   });
 
   it('returns an array of objects with timestamp formated to JS Date object', () => {
@@ -87,7 +87,7 @@ describe('formatArticle', () => {
         created_at: new Date('2017-07-21T17:54:10.346Z')
       }
     ];
-    expect(formatArticle(input)).toEqual(output);
+    expect(formatTimestamp(input)).toEqual(output);
   });
 
   it('returns an array of objects without mutating the original array', () => {
@@ -111,7 +111,7 @@ describe('formatArticle', () => {
         created_at: 1471522072389
       }
     ];
-    formatArticle(input);
+    formatTimestamp(input);
     expect(input).toEqual(inputCopy);
   });
 });
@@ -120,4 +120,25 @@ describe('formatComment', () => {
   it('returns an empty array when passed an empty array', () => {
     expect(formatComment([])).toEqual([]);
   });
+
+  it('returns an array with object which has a timestamp formatted in created_at', () => {
+    const input = [
+      {
+        created_at: 1511354163389
+      }
+    ];
+    const output = [
+      {
+        created_at: new Date('2017-11-22T12:36:03.389Z')
+      }
+    ];
+    const expected = formatComment(input);
+    //expect(expected.created_at).toEqual(output.created_at);
+    expect(formatComment(input)).toEqual(output);
+  });
+
+  // comes with body, belongs_to, created_by, votes, created_at
+  // needs to format created_at
+  // created_by key needs to be author
+  // belongs_to needs to be article_id
 });
