@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('../app');
-console.log(app);
 describe('./api', () => {
   describe('/topics', () => {
     it('GET 200 - responds with an array of topics', () => {
