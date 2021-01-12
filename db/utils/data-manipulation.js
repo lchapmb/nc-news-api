@@ -15,23 +15,24 @@ formatTimestamp = (data) => {
 };
 
 createLookup = (array) => {
-
   const lookup = {};
   if (array.length) {
     array.forEach((item) => {
-      lookup[item.title] = item.article_id
-    })
+      lookup[item.title] = item.article_id;
+    });
   }
   return lookup;
-}
+};
 
 formatComment = (data, lookup) => {
   const item = formatTimestamp(data);
   if (item.length) {
-    item[0].author = item[0].created_by;
-    delete item[0].created_by;
-    item[0].article_id = lookup[item[0].belongs_to]
-    delete item[0].belongs_to;
+    item.forEach((comment) => {
+      comment.author = comment.created_by;
+      delete comment.created_by;
+      comment.article_id = lookup[comment.belongs_to];
+      delete comment.belongs_to;
+    });
   }
   return item;
 };

@@ -26,11 +26,10 @@ exports.seed = function (knex) {
     .then(() => {
       const formattedArticleData = formatTimestamp(articleData);
       return knex('articles').insert(formattedArticleData).returning('*');
-    }).then((articleDataForComments) => {
-      //format data
-      const articleRefTable = createLookup(articleDataForComments)
-      const formattedCommentData = formatComment(commentData);
-      console.log(articleRefTable)
+    })
+    .then((articleDataForComments) => {
+      const articleRefTable = createLookup(articleDataForComments);
+      const formattedCommentData = formatComment(commentData, articleRefTable);
       return knex('comments').insert(formattedCommentData).returning('*');
     });
 };
