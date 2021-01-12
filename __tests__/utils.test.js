@@ -132,9 +132,20 @@ describe('formatComment', () => {
         created_at: new Date('2017-11-22T12:36:03.389Z')
       }
     ];
-    const expected = formatComment(input);
-    //expect(expected.created_at).toEqual(output.created_at);
     expect(formatComment(input)).toEqual(output);
+  })
+  it('Returns an array with an object where created by key is changed to author', () => {
+    const input = [{
+      body: 'Nobis consequatur animi. Ullam nobis quaerat voluptates veniam.',
+      belongs_to: 'Making sense of Redux',
+      created_by: 'grumpy19',
+      votes: 7,
+      created_at: 1478813209256,
+    }]
+    const formattedOutput = formatComment(input)
+    expect(formattedOutput[0].author).toEqual(input[0].created_by)
+    expect(Object.keys(formattedOutput[0])).toContain('author')
+    expect(Object.keys(formattedOutput[0])).not.toContain('created_by')
   });
 
   // comes with body, belongs_to, created_by, votes, created_at

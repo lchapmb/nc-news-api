@@ -15,7 +15,14 @@ formatTimestamp = (data) => {
 };
 
 formatComment = (data) => {
-  return formatTimestamp(data);
+  const item = formatTimestamp(data);
+  if (item.length) {
+    item[0].author = item[0].created_by;
+    delete item[0].created_by;
+  }
+
+  console.log(item)
+  return item;
 };
 
 module.exports = { formatTimestamp, formatComment };

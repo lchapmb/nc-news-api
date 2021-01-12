@@ -29,6 +29,7 @@ exports.seed = function (knex) {
     .then(() => {
       //format data
       const formattedCommentData = formatComment(commentData);
+      console.log(formattedCommentData)
       return knex('comments').insert(formattedCommentData).returning('*');
     });
 };
