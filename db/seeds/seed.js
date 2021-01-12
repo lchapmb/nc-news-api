@@ -5,6 +5,8 @@ const {
   userData
 } = require('../data/index.js');
 
+const { formatArticle } = require('../utils/data-manipulation');
+
 exports.seed = function (knex) {
   return knex.migrate
     .rollback()
