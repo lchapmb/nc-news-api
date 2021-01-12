@@ -1,4 +1,7 @@
-const { formatArticle } = require('../db/utils/data-manipulation.js');
+const {
+  formatArticle,
+  formatComment
+} = require('../db/utils/data-manipulation.js');
 
 describe('formatArticle', () => {
   it('returns an empty array when passed an empty array', () => {
@@ -110,5 +113,11 @@ describe('formatArticle', () => {
     ];
     formatArticle(input);
     expect(input).toEqual(inputCopy);
+  });
+});
+
+describe('formatComment', () => {
+  it('returns an empty array when passed an empty array', () => {
+    expect(formatComment([])).toEqual([]);
   });
 });

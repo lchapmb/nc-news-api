@@ -5,7 +5,7 @@ const {
   userData
 } = require('../data/index.js');
 
-const { formatArticle } = require('../utils/data-manipulation');
+const { formatArticle, formatComment } = require('../utils/data-manipulation');
 
 exports.seed = function (knex) {
   return knex.migrate
@@ -22,5 +22,10 @@ exports.seed = function (knex) {
     .then(() => {
       const formattedArticleData = formatArticle(articleData);
       return knex('articles').insert(formattedArticleData).returning('*');
+    })
+    .then(() => {
+      //format data
+      const formattedCommentData = formatComment(commentData);
+      return knex('comments').insert(formattedCommentData).returning('*');
     });
 };

@@ -13,3 +13,7 @@ exports.formatArticle = (data) => {
   }
   return finalArr;
 };
+
+exports.formatComment = () => {
+  return [];
+};
