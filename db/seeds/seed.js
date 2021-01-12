@@ -7,7 +7,8 @@ const {
 
 const {
   formatTimestamp,
-  formatComment
+  formatComment,
+  createLookup
 } = require('../utils/data-manipulation');
 
 exports.seed = function (knex) {
@@ -25,11 +26,11 @@ exports.seed = function (knex) {
     .then(() => {
       const formattedArticleData = formatTimestamp(articleData);
       return knex('articles').insert(formattedArticleData).returning('*');
-    })
-    .then(() => {
+    }).then((articleDataForComments) => {
       //format data
+      const articleRefTable = createLookup(articleDataForComments)
       const formattedCommentData = formatComment(commentData);
-      console.log(formattedCommentData)
+      console.log(articleRefTable)
       return knex('comments').insert(formattedCommentData).returning('*');
     });
 };

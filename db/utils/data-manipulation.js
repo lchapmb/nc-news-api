@@ -14,15 +14,26 @@ formatTimestamp = (data) => {
   return finalArr;
 };
 
-formatComment = (data) => {
+createLookup = (array) => {
+
+  const lookup = {};
+  if (array.length) {
+    array.forEach((item) => {
+      lookup[item.title] = item.article_id
+    })
+  }
+  return lookup;
+}
+
+formatComment = (data, lookup) => {
   const item = formatTimestamp(data);
   if (item.length) {
     item[0].author = item[0].created_by;
     delete item[0].created_by;
+    item[0].article_id = lookup[item[0].belongs_to]
+    delete item[0].belongs_to;
   }
-
-  console.log(item)
   return item;
 };
 
-module.exports = { formatTimestamp, formatComment };
+module.exports = { formatTimestamp, formatComment, createLookup };

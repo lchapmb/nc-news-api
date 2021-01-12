@@ -1,7 +1,9 @@
 const {
   formatTimestamp,
-  formatComment
+  formatComment,
+  createLookup
 } = require('../db/utils/data-manipulation.js');
+
 
 describe('formatTimestamp', () => {
   it('returns an empty array when passed an empty array', () => {
@@ -124,15 +126,18 @@ describe('formatComment', () => {
   it('returns an array with object which has a timestamp formatted in created_at', () => {
     const input = [
       {
+        belongs_to: 'Making sense of Redux',
         created_at: 1511354163389
       }
     ];
     const output = [
       {
-        created_at: new Date('2017-11-22T12:36:03.389Z')
+        created_at: new Date('2017-11-22T12:36:03.389Z'),
+        article_id: 1
       }
     ];
-    expect(formatComment(input)).toEqual(output);
+    const lookup = {'Making sense of Redux': 1}
+    expect(formatComment(input, lookup)).toEqual(output);
   })
   it('Returns an array with an object where created by key is changed to author', () => {
     const input = [{
@@ -142,14 +147,44 @@ describe('formatComment', () => {
       votes: 7,
       created_at: 1478813209256,
     }]
-    const formattedOutput = formatComment(input)
+    const lookup = {'Making sense of Redux': 1}
+    const formattedOutput = formatComment(input, lookup)
     expect(formattedOutput[0].author).toEqual(input[0].created_by)
     expect(Object.keys(formattedOutput[0])).toContain('author')
     expect(Object.keys(formattedOutput[0])).not.toContain('created_by')
+  })
+  it('returns an array with an object where belongs to is replaced with article_id', () => {
+    const input = [{
+      body: 'Nobis consequatur animi. Ullam nobis quaerat voluptates veniam.',
+      belongs_to: 'Making sense of Redux',
+      created_by: 'grumpy19',
+      votes: 7,
+      created_at: 1478813209256,
+    }]
+    const lookup = {'Making sense of Redux': 1}
+    const formattedOutput = formatComment(input, lookup)
+    expect(formattedOutput[0].article_id).toEqual(1)
+    expect(Object.keys(formattedOutput[0])).not.toContain('belongs_to')
   });
 
   // comes with body, belongs_to, created_by, votes, created_at
   // needs to format created_at
   // created_by key needs to be author
   // belongs_to needs to be article_id
+  describe('createLookup', () => {
+    it('Returns an empty object when passed an empty array', () => {
+      expect(createLookup([])).toEqual({})
+    })
+    it('Returns a lookup object when passed an array of a single item', () => {
+      const input = [{ article_id: 1, title: 'hello' }]
+      const output = { 'hello': 1 }
+      expect(createLookup(input)).toEqual(output);
+    })
+    it('Returns a lookup object when passed multiple items', () => {
+      const input = [{ article_id: 1, title: 'hello' },
+      { article_id: 2, title: 'go away' }]
+      const output = { 'hello': 1, 'go away': 2 }
+      expect(createLookup(input)).toEqual(output);
+    })
+  })
 });
