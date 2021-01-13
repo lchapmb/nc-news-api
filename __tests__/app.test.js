@@ -66,5 +66,40 @@ describe('/api', () => {
     it('GET 200', () => {
       return request(app).get('/api/articles/1').expect(200);
     });
+    it('GET 200 - returns an object with a key of article and a value containing the article object', () => {
+      return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body)).toEqual(['article']);
+        });
+    });
+    it('GET 200 - returns an object with a key of article with a value of an object containing expected keys', () => {
+      return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body.article).sort()).toEqual(
+            [
+              'author',
+              'title',
+              'article_id',
+              'body',
+              'topic',
+              'created_at',
+              'votes',
+              'comment_count'
+            ].sort()
+          );
+        });
+    });
+    it('GET 200 - returned article object has a key of comment_count with the number of associated comments as the value', () => {
+      return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.article.comment_count).toEqual(13);
+        });
+    });
   });
 });
