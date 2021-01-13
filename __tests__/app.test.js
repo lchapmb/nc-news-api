@@ -98,7 +98,7 @@ describe('/api', () => {
         .get('/api/articles/1')
         .expect(200)
         .then(({ body }) => {
-          expect(body.article.comment_count).toEqual(13);
+          expect(body.article.comment_count).toEqual('13');
         });
     });
   });
