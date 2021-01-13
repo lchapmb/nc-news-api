@@ -29,8 +29,9 @@ describe('/api', () => {
   });
 
   describe('/users/:username', () => {
-    it('GET 200', () => {
+    it.only('GET 200', () => {
       return request(app).get('/api/users/icellusedkars').expect(200);
     });
+    // check format of return data/object
   });
 });
