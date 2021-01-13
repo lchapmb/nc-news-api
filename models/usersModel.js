@@ -1,7 +1,7 @@
 const connection = require('../db/connection');
 
-exports.fetchUserById = (req) => {
-  console.log('in the model');
+exports.fetchUserByUsername = (req) => {
+  //console.log('in the model');
   const username = req.params.username;
 
   return connection

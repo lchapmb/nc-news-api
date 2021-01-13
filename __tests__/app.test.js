@@ -61,4 +61,10 @@ describe('/api', () => {
         });
     });
   });
+
+  describe('/articles/:article_id', () => {
+    it('GET 200', () => {
+      return request(app).get('/api/articles/1').expect(200);
+    });
+  });
 });
