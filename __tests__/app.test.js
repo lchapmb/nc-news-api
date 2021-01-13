@@ -15,8 +15,8 @@ describe('./api', () => {
         .get('/api/topics')
         .expect(200)
         .then(({ body }) => {
-          console.log(body.topics.topics);
-          expect(body.topics.topics.length).toBe(3);
+          console.log(body);
+          expect(body.topics.length).toBe(3);
         });
     });
   });
