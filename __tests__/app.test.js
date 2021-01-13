@@ -5,7 +5,7 @@ const connection = require('../db/connection');
 beforeEach(() => connection.seed.run());
 afterAll(() => connection.destroy());
 
-describe('./api', () => {
+describe('/api', () => {
   describe('/topics', () => {
     it('GET 200', () => {
       return request(app).get('/api/topics').expect(200);
@@ -25,6 +25,12 @@ describe('./api', () => {
         .then(({ body }) => {
           expect(Object.keys(body.topics[0])).toEqual(['slug', 'description']);
         });
+    });
+  });
+
+  describe('/users/:username', () => {
+    it('GET 200', () => {
+      return request(app).get('/api/users/icellusedkars').expect(200);
     });
   });
 });
