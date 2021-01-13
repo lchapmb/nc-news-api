@@ -15,8 +15,15 @@ describe('./api', () => {
         .get('/api/topics')
         .expect(200)
         .then(({ body }) => {
-          console.log(body);
           expect(body.topics.length).toBe(3);
+        });
+    });
+    it('GET 200 - each returned object in the array has a key of slug and a key of description', () => {
+      return request(app)
+        .get('/api/topics')
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body.topics[0])).toEqual(['slug', 'description']);
         });
     });
   });
