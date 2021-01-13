@@ -1,8 +1,10 @@
-const connection = require('../db/connection')
-
+const connection = require('../db/connection');
 
 exports.fetchAllTopics = () => {
-  console.log('in controller')
-  return connection.select('*')
-  .from('topics')
-}
+  return connection
+    .select('*')
+    .from('topics')
+    .then((results) => {
+      return { topics: results };
+    });
+};
