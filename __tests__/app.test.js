@@ -29,9 +29,36 @@ describe('/api', () => {
   });
 
   describe('/users/:username', () => {
-    it.only('GET 200', () => {
+    it('GET 200', () => {
       return request(app).get('/api/users/icellusedkars').expect(200);
     });
-    // check format of return data/object
+    it('GET 200 - returns an object with key of user and a value containing the user object', () => {
+      return request(app)
+        .get('/api/users/icellusedkars')
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body)).toEqual(['user']);
+        });
+    });
+    it('GET 200 - returns an object with key of user and a value containing the user object with keys of username, avatar_url, and name', () => {
+      return request(app)
+        .get('/api/users/icellusedkars')
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body.user)).toEqual([
+            'username',
+            'avatar_url',
+            'name'
+          ]);
+        });
+    });
+    it('GET 404 for an invalid username - msg sent "Invalid username"', () => {
+      return request(app)
+        .get('/api/users/icsellusedcars')
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe('Invalid username');
+        });
+    });
   });
 });

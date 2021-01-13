@@ -9,7 +9,13 @@ exports.fetchUserById = (req) => {
     .from('users')
     .where('username', '=', username)
     .then((user) => {
-      console.log(user);
-      return user;
+      if (!user.length) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Invalid username'
+        });
+      } else {
+        return user[0];
+      }
     });
 };
