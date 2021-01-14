@@ -62,7 +62,7 @@ describe('/api', () => {
     });
   });
 
-  describe('/articles/:article_id', () => {
+  describe.only('/articles/:article_id', () => {
     it('GET 200', () => {
       return request(app).get('/api/articles/1').expect(200);
     });
@@ -161,6 +161,26 @@ describe('/api', () => {
         .then((res) => {
           expect(res.body.article.votes).toEqual('99');
         });
+    });
+    it('PATCH 404  - responds with error message when attempting to make request to incorrect article_id as per GET', () => {
+      return request(app)
+        .patch('/api/articles/1000')
+        .send({ inc_votes: '-1' })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe('Article_id not found');
+        });
+    });
+    it('PATCH 400 - when given body in incorreect format/with incorrect key', () => {
+      return request(app)
+        .patch('/api/articles/1')
+        .send({ change_votes: '-1' })
+        .expect(400);
+      /*
+        .then(({ body }) => {
+          expect(body.msg).toBe('Request does not contain recognised key');
+        });
+        */
     });
   });
 });

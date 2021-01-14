@@ -35,12 +35,19 @@ exports.amendArticleById = (req) => {
   //console.log('in the model');
 
   return this.fetchArticleById(req).then((article) => {
-    if (Object.keys(req.body).includes('inc_votes')) {
+    console.log(Object.keys(req.body).length);
+    if (!Object.keys(req.body).length) {
+      return article;
+    } else if (Object.keys(req.body).includes('inc_votes')) {
       const oldVotes = +article.votes;
       const voteChange = +req.body.inc_votes;
       const newVote = oldVotes + voteChange;
       article.votes = newVote.toString();
+      return article;
+    } else if (!Object.keys(req.body).includes('inc_votes')) {
+      return Promise.reject({
+        status: 400
+      });
     }
-    return article;
   });
 };
