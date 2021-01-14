@@ -31,7 +31,7 @@ exports.fetchArticleById = (req) => {
   }
 };
 
-exports.amendArticleById = (id, inc_votes) => {
+exports.amendArticleById = (id, inc_votes = 0) => {
   //console.log('in the model');
 
   return connection
@@ -40,12 +40,12 @@ exports.amendArticleById = (id, inc_votes) => {
     .increment('votes', inc_votes)
     .returning('*')
     .then((article) => {
-      console.log(article);
+      if (!article.length) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Article_id not found'
+        });
+      }
       return article[0];
     });
-
-  // default value for inc_votes =0
-  // if (req.body.inc_votes)
-  // knex increment
-  // knex modify
 };

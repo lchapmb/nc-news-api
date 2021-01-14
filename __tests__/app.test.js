@@ -62,7 +62,7 @@ describe('/api', () => {
     });
   });
 
-  describe.only('/articles/:article_id', () => {
+  describe('/articles/:article_id', () => {
     it('GET 200', () => {
       return request(app).get('/api/articles/1').expect(200);
     });
@@ -141,38 +141,32 @@ describe('/api', () => {
           expect(res.body.article.votes).toEqual(99);
         });
     });
-    /*
-    it('PATCH 4** - responds with patched article object when given parameter to alter vote { inc_votes: newVote } whose value is a string or a number', () => {
+    it('PATCH 200 - responds with patched article object when no inc_votes passed', () => {
       return request(app)
         .patch('/api/articles/1')
-        .send({ inc_votes: '-1' })
-        .expect(201)
+        .send({})
+        .expect(200)
         .then((res) => {
-          expect(res.body.article.votes).toEqual('99');
+          expect(res.body.article.votes).toEqual(100);
         });
     });
-    it('PATCH 404  - responds with error message when attempting to make request to incorrect article_id as per GET', () => {
+    it('PATCH 404  - responds with error message when attempting to make request to incorrect article_id', () => {
       return request(app)
         .patch('/api/articles/1000')
-        .send({ inc_votes: '-1' })
+        .send({ inc_votes: -1 })
         .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe('Article_id not found');
         });
     });
-    it('PATCH 400 - when given body in incorreect format/with incorrect key', () => {
+    it('PATCH 400  - responds with error message when attempting to make request to article_id which is not a number', () => {
       return request(app)
-        .patch('/api/articles/1')
-        .send({ change_votes: '-1' })
-        .expect(400);
-      
+        .patch('/api/articles/not_an_id')
+        .send({ inc_votes: -1 })
+        .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe('Request does not contain recognised key');
+          expect(body.msg).toBe('Invalid article_id');
         });
-        
-      // change patch to only take a number
-      // this doesn't change the data
     });
-    */
   });
 });
