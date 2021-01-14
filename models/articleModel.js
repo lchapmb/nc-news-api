@@ -49,3 +49,14 @@ exports.amendArticleById = (id, inc_votes = 0) => {
       return article[0];
     });
 };
+
+exports.addCommentByArticleId = (id, comment) => {
+  console.log('in the model');
+  return connection
+    .select('*')
+    .from('comments')
+    .where('article_id', '=', id)
+    .then((comment) => {
+      return 'comment';
+    });
+};

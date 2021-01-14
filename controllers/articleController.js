@@ -1,6 +1,7 @@
 const {
   fetchArticleById,
-  amendArticleById
+  amendArticleById,
+  addCommentByArticleId
 } = require('../models/articleModel');
 
 exports.getArticleById = (req, res, next) => {
@@ -19,6 +20,19 @@ exports.patchArticleById = (req, res, next) => {
     .then((article) => {
       //console.log('in the controller');
       res.status(200).send({ article });
+    })
+    .catch(next);
+};
+
+exports.postCommentByArticleId = (req, res, next) => {
+  const comment = req.body;
+  console.log(comment);
+  const id = req.params.article_id;
+  console.log(id);
+  addCommentByArticleId(id, comment)
+    .then((comment) => {
+      console.log('in the controller');
+      res.status(201).send({ comment });
     })
     .catch(next);
 };
