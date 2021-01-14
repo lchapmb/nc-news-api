@@ -101,5 +101,21 @@ describe('/api', () => {
           expect(body.article.comment_count).toEqual('13');
         });
     });
+    it('GET 404 - when given an article_id which is not present, gives message "Article_id not found"', () => {
+      return request(app)
+        .get('/api/articles/99')
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe('Article_id not found');
+        });
+    });
+    it('GET 400 - when given an article_id in an invalid format (ie not a number), gives message "Not a valid article_id"', () => {
+      return request(app)
+        .get('/api/articles/not-a-number')
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe('Not a valid article_id');
+        });
+    });
   });
 });
