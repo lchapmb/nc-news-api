@@ -31,26 +31,21 @@ exports.fetchArticleById = (req) => {
   }
 };
 
-exports.amendArticleById = (req) => {
+exports.amendArticleById = (id, inc_votes) => {
   //console.log('in the model');
 
-  return this.fetchArticleById(req).then((article) => {
-    // defualt value for inc_votes =0
-    // if (req.body.inc_votes)
-    // knex increment
-    //knex modify
-    if (!Object.keys(req.body).length) {
-      return article;
-    } else if (Object.keys(req.body).includes('inc_votes')) {
-      const oldVotes = +article.votes;
-      const voteChange = +req.body.inc_votes;
-      const newVote = oldVotes + voteChange;
-      article.votes = newVote.toString();
-      return article;
-    } else if (!Object.keys(req.body).includes('inc_votes')) {
-      return Promise.reject({
-        status: 400
-      });
-    }
-  });
+  return connection
+    .from('articles')
+    .where('article_id', '=', id)
+    .increment('votes', inc_votes)
+    .returning('*')
+    .then((article) => {
+      console.log(article);
+      return article[0];
+    });
+
+  // default value for inc_votes =0
+  // if (req.body.inc_votes)
+  // knex increment
+  // knex modify
 };

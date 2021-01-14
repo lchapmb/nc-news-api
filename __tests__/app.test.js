@@ -117,43 +117,32 @@ describe('/api', () => {
           expect(body.msg).toBe('Not a valid article_id');
         });
     });
-    it('PATCH 201 - responds with unpatched article object when given no parameters', () => {
-      return request(app)
-        .patch('/api/articles/1')
-        .send({})
-        .expect(201)
-        .then((res) => {
-          expect(res.body.article).toEqual({
-            article_id: 1,
-            title: 'Living in the shadow of a great man',
-            body: 'I find this existence challenging',
-            votes: '100',
-            topic: 'mitch',
-            author: 'butter_bridge',
-            created_at: '2018-11-15T12:21:54.171Z',
-            comment_count: '13'
-          });
-        });
-    });
-    it('PATCH 201 - responds with patched article object when given parameter to alter vote { inc_votes: newVote }', () => {
+    it('PATCH 200', () => {
       return request(app)
         .patch('/api/articles/1')
         .send({ inc_votes: 1 })
-        .expect(201)
+        .expect(200);
+    });
+    it('PATCH 200 - responds with patched article object when given parameter to alter vote { inc_votes: newVote }', () => {
+      return request(app)
+        .patch('/api/articles/1')
+        .send({ inc_votes: 1 })
+        .expect(200)
         .then((res) => {
-          expect(res.body.article.votes).toEqual('101');
+          expect(res.body.article.votes).toEqual(101);
         });
     });
-    it('PATCH 201 - responds with patched article object when given parameter to alter vote { inc_votes: newVote } whose value is negative', () => {
+    it('PATCH 200 - responds with patched article object when given parameter to alter vote { inc_votes: newVote } whose value is negative', () => {
       return request(app)
         .patch('/api/articles/1')
         .send({ inc_votes: -1 })
-        .expect(201)
+        .expect(200)
         .then((res) => {
-          expect(res.body.article.votes).toEqual('99');
+          expect(res.body.article.votes).toEqual(99);
         });
     });
-    it('PATCH 201 - responds with patched article object when given parameter to alter vote { inc_votes: newVote } whose value is a string or a number', () => {
+    /*
+    it('PATCH 4** - responds with patched article object when given parameter to alter vote { inc_votes: newVote } whose value is a string or a number', () => {
       return request(app)
         .patch('/api/articles/1')
         .send({ inc_votes: '-1' })
@@ -176,13 +165,14 @@ describe('/api', () => {
         .patch('/api/articles/1')
         .send({ change_votes: '-1' })
         .expect(400);
-      /*
+      
         .then(({ body }) => {
           expect(body.msg).toBe('Request does not contain recognised key');
         });
-        */
+        
       // change patch to only take a number
       // this doesn't change the data
     });
+    */
   });
 });

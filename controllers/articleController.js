@@ -13,11 +13,12 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.patchArticleById = (req, res, next) => {
-  //req.body.inc_votes
-  amendArticleById(req)
+  const inc_votes = req.body.inc_votes;
+  const id = req.params.article_id;
+  amendArticleById(id, inc_votes)
     .then((article) => {
       //console.log('in the controller');
-      res.status(201).send({ article });
+      res.status(200).send({ article });
     })
     .catch(next);
 };
