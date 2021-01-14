@@ -181,6 +181,8 @@ describe('/api', () => {
           expect(body.msg).toBe('Request does not contain recognised key');
         });
         */
+      // change patch to only take a number
+      // this doesn't change the data
     });
   });
 });

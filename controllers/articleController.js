@@ -13,6 +13,7 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.patchArticleById = (req, res, next) => {
+  //req.body.inc_votes
   amendArticleById(req)
     .then((article) => {
       //console.log('in the controller');

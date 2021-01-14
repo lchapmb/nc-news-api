@@ -35,7 +35,10 @@ exports.amendArticleById = (req) => {
   //console.log('in the model');
 
   return this.fetchArticleById(req).then((article) => {
-    console.log(Object.keys(req.body).length);
+    // defualt value for inc_votes =0
+    // if (req.body.inc_votes)
+    // knex increment
+    //knex modify
     if (!Object.keys(req.body).length) {
       return article;
     } else if (Object.keys(req.body).includes('inc_votes')) {
