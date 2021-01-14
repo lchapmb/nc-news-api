@@ -15,7 +15,7 @@ exports.getArticleById = (req, res, next) => {
 exports.patchArticleById = (req, res, next) => {
   amendArticleById(req)
     .then((article) => {
-      console.log('in the controller');
+      //console.log('in the controller');
       res.status(201).send({ article });
     })
     .catch(next);

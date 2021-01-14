@@ -135,5 +135,32 @@ describe('/api', () => {
           });
         });
     });
+    it('PATCH 201 - responds with patched article object when given parameter to alter vote { inc_votes: newVote }', () => {
+      return request(app)
+        .patch('/api/articles/1')
+        .send({ inc_votes: 1 })
+        .expect(201)
+        .then((res) => {
+          expect(res.body.article.votes).toEqual('101');
+        });
+    });
+    it('PATCH 201 - responds with patched article object when given parameter to alter vote { inc_votes: newVote } whose value is negative', () => {
+      return request(app)
+        .patch('/api/articles/1')
+        .send({ inc_votes: -1 })
+        .expect(201)
+        .then((res) => {
+          expect(res.body.article.votes).toEqual('99');
+        });
+    });
+    it('PATCH 201 - responds with patched article object when given parameter to alter vote { inc_votes: newVote } whose value is a string or a number', () => {
+      return request(app)
+        .patch('/api/articles/1')
+        .send({ inc_votes: '-1' })
+        .expect(201)
+        .then((res) => {
+          expect(res.body.article.votes).toEqual('99');
+        });
+    });
   });
 });

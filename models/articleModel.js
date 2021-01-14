@@ -32,10 +32,15 @@ exports.fetchArticleById = (req) => {
 };
 
 exports.amendArticleById = (req) => {
-  console.log('in the model');
+  //console.log('in the model');
 
   return this.fetchArticleById(req).then((article) => {
-    console.log('deeper underground');
+    if (Object.keys(req.body).includes('inc_votes')) {
+      const oldVotes = +article.votes;
+      const voteChange = +req.body.inc_votes;
+      const newVote = oldVotes + voteChange;
+      article.votes = newVote.toString();
+    }
     return article;
   });
 };
