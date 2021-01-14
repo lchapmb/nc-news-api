@@ -30,3 +30,12 @@ exports.fetchArticleById = (req) => {
       });
   }
 };
+
+exports.amendArticleById = (req) => {
+  console.log('in the model');
+
+  return this.fetchArticleById(req).then((article) => {
+    console.log('deeper underground');
+    return article;
+  });
+};

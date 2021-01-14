@@ -117,5 +117,23 @@ describe('/api', () => {
           expect(body.msg).toBe('Not a valid article_id');
         });
     });
+    it('PATCH 201 - responds with unpatched article object when given no parameters', () => {
+      return request(app)
+        .patch('/api/articles/1')
+        .send({})
+        .expect(201)
+        .then((res) => {
+          expect(res.body.article).toEqual({
+            article_id: 1,
+            title: 'Living in the shadow of a great man',
+            body: 'I find this existence challenging',
+            votes: '100',
+            topic: 'mitch',
+            author: 'butter_bridge',
+            created_at: '2018-11-15T12:21:54.171Z',
+            comment_count: '13'
+          });
+        });
+    });
   });
 });
