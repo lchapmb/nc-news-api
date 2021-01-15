@@ -171,7 +171,9 @@ describe('/api', () => {
             expect(body.msg).toBe('Invalid article_id');
           });
       });
-      describe.only('DELETE', () => {
+      // the test block below is not finished, function not finished
+
+      describe.skip('DELETE', () => {
         it('DELETE 204', () => {
           return request(app).delete('/api/articles/1').expect(204);
         });
@@ -181,7 +183,7 @@ describe('/api', () => {
 
   // the test block below is not finished, function not finished
   describe('/articles/:article_id/comments', () => {
-    describe('POST', () => {
+    describe.skip('POST', () => {
       it('POST 201', () => {
         return request(app)
           .post('/api/articles/1/comments')
@@ -248,6 +250,30 @@ describe('/api', () => {
       });
       // incorrect username
       // no body
+    });
+    // the test block below is not finished, function not finished
+    describe.only('GET', () => {
+      it('GET 200', () => {
+        return request(app).get('/api/articles/1/comments').expect(200);
+      });
+      it('GET 200 - returns an object with a key of comments and a value of an array of comments when given a valid article_id', () => {
+        return request(app)
+          .get('/api/articles/1/comments')
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comments.length).toBe(13);
+          });
+      });
+      it.skip('GET 400 - returns message "Invalid article_id" when passed an article_id which is not a number', () => {
+        return request(app)
+          .get('/api/articles/185/comments')
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid article_id');
+          });
+      });
+      // invalid article_id
+      // not an article_id
     });
   });
 });

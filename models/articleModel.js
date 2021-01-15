@@ -93,3 +93,14 @@ exports.addCommentByArticleId = (id, comment) => {
         });
     });
 };
+
+exports.fetchCommentsByArticle = (id) => {
+  console.log('in the model');
+  return connection
+    .select('*')
+    .from('comments')
+    .where('article_id', '=', id)
+    .then((comments) => {
+      return comments;
+    });
+};

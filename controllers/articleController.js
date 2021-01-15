@@ -2,7 +2,8 @@ const {
   fetchArticleById,
   amendArticleById,
   removeArticleById,
-  addCommentByArticleId
+  addCommentByArticleId,
+  fetchCommentsByArticle
 } = require('../models/articleModel');
 
 exports.getArticleById = (req, res, next) => {
@@ -43,6 +44,16 @@ exports.deleteArticleById = (req, res, next) => {
   removeArticleById(id)
     .then(() => {
       res.status(204);
+    })
+    .catch(next);
+};
+
+exports.getCommentsByArticle = (req, res, next) => {
+  console.log('in the controller');
+  const id = req.params.article_id;
+  fetchCommentsByArticle(id)
+    .then((comments) => {
+      res.status(200).send({ comments });
     })
     .catch(next);
 };
