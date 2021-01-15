@@ -72,11 +72,8 @@ exports.removeArticleById = (id) => {
     });
 };
 
-// the function below is not finished
-
 exports.addCommentByArticleId = (id, comment) => {
   console.log('in the model');
-  //insert('comment').into('comments').returning('*');
   const commentObj = {};
   commentObj.author = comment.username;
   commentObj.body = comment.body;
