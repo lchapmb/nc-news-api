@@ -181,6 +181,15 @@ describe('/api', () => {
           .send({ username: 'icellusedkars', body: 'generic comment' })
           .expect(201);
       });
+      it('POST 201 - returns a comment object when passed an object with keys of username and body', () => {
+        return request(app)
+          .post('/api/articles/1/comments')
+          .send({ username: 'icellusedkars', body: 'generic comment' })
+          .expect(201)
+          .then((res) => {
+            expect(res.body.comment.author).toEqual('icellusedkars');
+          });
+      });
 
       /*
     Request body accepts

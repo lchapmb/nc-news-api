@@ -52,11 +52,19 @@ exports.amendArticleById = (id, inc_votes = 0) => {
 
 exports.addCommentByArticleId = (id, comment) => {
   console.log('in the model');
+  //insert('comment').into('comments').returning('*');
+  const commentObj = {};
+  commentObj.author = comment.username;
+  commentObj.body = comment.body;
+  commentObj.article_id = id;
+  console.log(commentObj);
+
   return connection
-    .select('*')
-    .from('comments')
-    .where('article_id', '=', id)
+    .insert(commentObj)
+    .into('comments')
+    .returning('*')
     .then((comment) => {
-      return 'comment';
+      console.log(comment);
+      return comment[0];
     });
 };
