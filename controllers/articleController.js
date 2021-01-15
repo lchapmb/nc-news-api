@@ -1,6 +1,7 @@
 const {
   fetchArticleById,
   amendArticleById,
+  removeArticleById,
   addCommentByArticleId
 } = require('../models/articleModel');
 
@@ -32,6 +33,16 @@ exports.postCommentByArticleId = (req, res, next) => {
     .then((comment) => {
       console.log('in the controller');
       res.status(201).send({ comment });
+    })
+    .catch(next);
+};
+
+exports.deleteArticleById = (req, res, next) => {
+  const id = req.params.article_id;
+
+  removeArticleById(id)
+    .then(() => {
+      res.status(204);
     })
     .catch(next);
 };

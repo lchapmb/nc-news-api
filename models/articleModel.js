@@ -50,6 +50,18 @@ exports.amendArticleById = (id, inc_votes = 0) => {
     });
 };
 
+exports.removeArticleById = (id) => {
+  return connection
+    .from('articles')
+    .where('article_id', '=', id)
+    .del()
+    .then(() => {
+      // something
+    });
+};
+
+// the function below is not finished
+
 exports.addCommentByArticleId = (id, comment) => {
   console.log('in the model');
   //insert('comment').into('comments').returning('*');
@@ -75,6 +87,7 @@ exports.addCommentByArticleId = (id, comment) => {
         .returning('*')
         .then((comment) => {
           console.log(comment);
+          console.log(err);
 
           return comment[0];
         });

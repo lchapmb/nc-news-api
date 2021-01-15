@@ -171,9 +171,16 @@ describe('/api', () => {
             expect(body.msg).toBe('Invalid article_id');
           });
       });
+      describe.only('DELETE', () => {
+        it('DELETE 204', () => {
+          return request(app).delete('/api/articles/1').expect(204);
+        });
+      });
     });
   });
-  describe.only('/articles/:article_id/comments', () => {
+
+  // the test block below is not finished, function not finished
+  describe('/articles/:article_id/comments', () => {
     describe('POST', () => {
       it('POST 201', () => {
         return request(app)
@@ -219,10 +226,28 @@ describe('/api', () => {
             expect(body.msg).toBe('Article_id not found');
           });
       });
+      it('POST 400 - when passed an article_id which is not a number ', () => {
+        return request(app)
+          .post('/api/articles/not-a-number/comments')
+          .send({ username: 'icellusedkars', body: 'generic comment' })
+          .expect(400)
+          .then(({ body }) => {
+            console.log(body.msg);
+            expect(body.msg).toBe('Invalid article_id');
+          });
+      });
+      it('POST 400 - when passed an invalid username ', () => {
+        return request(app)
+          .post('/api/articles/not-a-number/comments')
+          .send({ username: 'isellusedcars', body: 'generic comment' })
+          .expect(400)
+          .then(({ body }) => {
+            console.log(body.msg);
+            expect(body.msg).toBe('Invalid username');
+          });
+      });
       // incorrect username
       // no body
-      // incorrect article_id
-      // invalid article_id
     });
   });
 });
