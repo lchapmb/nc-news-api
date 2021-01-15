@@ -104,3 +104,12 @@ exports.fetchCommentsByArticle = (id) => {
       return comments;
     });
 };
+
+exports.fetchAllArticles = () => {
+  return connection
+    .select('*')
+    .from('articles')
+    .then((articles) => {
+      return articles;
+    });
+};

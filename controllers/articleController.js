@@ -3,7 +3,8 @@ const {
   amendArticleById,
   removeArticleById,
   addCommentByArticleId,
-  fetchCommentsByArticle
+  fetchCommentsByArticle,
+  fetchAllArticles
 } = require('../models/articleModel');
 
 exports.getArticleById = (req, res, next) => {
@@ -54,6 +55,14 @@ exports.getCommentsByArticle = (req, res, next) => {
   fetchCommentsByArticle(id)
     .then((comments) => {
       res.status(200).send({ comments });
+    })
+    .catch(next);
+};
+
+exports.getAllArticles = (req, res, next) => {
+  fetchAllArticles()
+    .then((articles) => {
+      res.status(200).send({ articles });
     })
     .catch(next);
 };

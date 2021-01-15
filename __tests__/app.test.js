@@ -62,6 +62,41 @@ describe('/api', () => {
     });
   });
 
+  describe.only('/articles', () => {
+    describe('GET', () => {
+      it('GET 200', () => {
+        return request(app).get('/api/articles').expect(200);
+      });
+      it('GET 200 - returns an object with a key of articles and an array of articles', () => {
+        return request(app)
+          .get('/api/articles')
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles.length).toBe(12);
+          });
+      });
+      it('GET 200 - each object in the articles array has keys of author, title, article_id, topic, created_at, votes, comment_count', () => {
+        return request(app)
+          .get('/api/articles')
+          .expect(200)
+          .then(({ body }) => {
+            expect(Object.keys(body.articles[0]).sort()).toEqual(
+              [
+                'author',
+                'title',
+                'article_id',
+                'body',
+                'topic',
+                'created_at',
+                'votes',
+                'comment_count'
+              ].sort()
+            );
+          });
+      });
+    });
+  });
+
   describe('/articles/:article_id', () => {
     describe('GET', () => {
       it('GET 200', () => {
@@ -252,7 +287,7 @@ describe('/api', () => {
       // no body
     });
     // the test block below is not finished, function not finished
-    describe.only('GET', () => {
+    describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles/1/comments').expect(200);
       });
