@@ -188,17 +188,41 @@ describe('/api', () => {
           .expect(201)
           .then((res) => {
             expect(res.body.comment.author).toEqual('icellusedkars');
+            expect(res.body.comment.body).toEqual('generic comment');
           });
       });
-
-      /*
-    Request body accepts
-    an object with the following properties:
-    username
-    body
-    Responds with
-    the posted comment
-    */
+      it('POST 201 - returns a comment object with keys comment_id, author, article_id, votes, created_at, and body', () => {
+        return request(app)
+          .post('/api/articles/1/comments')
+          .send({ username: 'icellusedkars', body: 'generic comment' })
+          .expect(201)
+          .then((res) => {
+            expect(Object.keys(res.body.comment).sort()).toEqual(
+              [
+                'comment_id',
+                'author',
+                'article_id',
+                'votes',
+                'created_at',
+                'body'
+              ].sort()
+            );
+          });
+      });
+      it('POST 404 - when passed an incorrect article_id returns ', () => {
+        return request(app)
+          .post('/api/articles/999/comments')
+          .send({ username: 'icellusedkars', body: 'generic comment' })
+          .expect(404);
+        // .then((body) => {
+        //   console.log(body.text);
+        //   expect(body.text.msg).toBe('Article_id not found');
+        // });
+      });
+      // incorrect username
+      // no body
+      // incorrect article_id
+      // invalid article_id
     });
   });
 });

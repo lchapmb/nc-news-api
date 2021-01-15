@@ -57,14 +57,26 @@ exports.addCommentByArticleId = (id, comment) => {
   commentObj.author = comment.username;
   commentObj.body = comment.body;
   commentObj.article_id = id;
-  console.log(commentObj);
 
   return connection
-    .insert(commentObj)
-    .into('comments')
-    .returning('*')
-    .then((comment) => {
-      console.log(comment);
-      return comment[0];
+    .select('*')
+    .from('articles')
+    .where('article_id', '=', id)
+    .then((article) => {
+      if (!article.length) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Article_id not found'
+        });
+      }
+      return connection
+        .insert(commentObj)
+        .into('comments')
+        .returning('*')
+        .then((comment) => {
+          console.log(comment);
+
+          return comment[0];
+        });
     });
 };

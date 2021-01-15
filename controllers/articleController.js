@@ -27,6 +27,7 @@ exports.patchArticleById = (req, res, next) => {
 exports.postCommentByArticleId = (req, res, next) => {
   const comment = req.body;
   const id = req.params.article_id;
+
   addCommentByArticleId(id, comment)
     .then((comment) => {
       console.log('in the controller');
