@@ -31,6 +31,18 @@ exports.fetchArticleById = (req) => {
   }
 };
 
+exports.fetchAllArticles = () => {
+  return connection
+    .select('articles.*')
+    .from('articles')
+    .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
+    .count('comment_id AS comment_count')
+    .groupBy('articles.article_id')
+    .then((articles) => {
+      return articles;
+    });
+};
+
 exports.amendArticleById = (id, inc_votes = 0) => {
   //console.log('in the model');
 
@@ -102,14 +114,5 @@ exports.fetchCommentsByArticle = (id) => {
     .where('article_id', '=', id)
     .then((comments) => {
       return comments;
-    });
-};
-
-exports.fetchAllArticles = () => {
-  return connection
-    .select('*')
-    .from('articles')
-    .then((articles) => {
-      return articles;
     });
 };
