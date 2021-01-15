@@ -9,7 +9,8 @@ describe('/api', () => {
   it('GET 200', () => {
     return request(app).get('/api').expect(200);
   });
-  describe.skip('/topics', () => {
+  //JSON describing all the available endpoints on your API
+  describe('/topics', () => {
     it('GET 200', () => {
       return request(app).get('/api/topics').expect(200);
     });
@@ -31,7 +32,7 @@ describe('/api', () => {
     });
   });
 
-  describe.skip('/users/:username', () => {
+  describe('/users/:username', () => {
     it('GET 200', () => {
       return request(app).get('/api/users/icellusedkars').expect(200);
     });
@@ -65,7 +66,7 @@ describe('/api', () => {
     });
   });
 
-  describe.skip('/articles', () => {
+  describe('/articles', () => {
     describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles').expect(200);
@@ -100,7 +101,7 @@ describe('/api', () => {
     });
   });
 
-  describe.skip('/articles/:article_id', () => {
+  describe('/articles/:article_id', () => {
     describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles/1').expect(200);
@@ -157,6 +158,7 @@ describe('/api', () => {
           });
       });
     });
+
     describe('PATCH', () => {
       it('PATCH 200', () => {
         return request(app)
@@ -220,8 +222,8 @@ describe('/api', () => {
   });
 
   // the test block below is not finished, function not finished
-  describe.skip('/articles/:article_id/comments', () => {
-    describe.skip('POST', () => {
+  describe('/articles/:article_id/comments', () => {
+    describe('POST', () => {
       it('POST 201', () => {
         return request(app)
           .post('/api/articles/1/comments')
@@ -256,13 +258,12 @@ describe('/api', () => {
             );
           });
       });
-      it('POST 404 - when passed an incorrect article_id returns ', () => {
+      it('POST 404 - when passed an incorrect article_id ', () => {
         return request(app)
           .post('/api/articles/999/comments')
           .send({ username: 'icellusedkars', body: 'generic comment' })
           .expect(404)
           .then(({ body }) => {
-            console.log(body.msg);
             expect(body.msg).toBe('Article_id not found');
           });
       });
@@ -272,8 +273,7 @@ describe('/api', () => {
           .send({ username: 'icellusedkars', body: 'generic comment' })
           .expect(400)
           .then(({ body }) => {
-            console.log(body.msg);
-            expect(body.msg).toBe('Invalid article_id');
+            expect(body.msg).toBe('Invalid id');
           });
       });
       it('POST 400 - when passed an invalid username ', () => {
@@ -282,8 +282,7 @@ describe('/api', () => {
           .send({ username: 'isellusedcars', body: 'generic comment' })
           .expect(400)
           .then(({ body }) => {
-            console.log(body.msg);
-            expect(body.msg).toBe('Invalid username');
+            expect(body.msg).toBe('Invalid id');
           });
       });
       // incorrect username

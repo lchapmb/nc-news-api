@@ -92,17 +92,13 @@ exports.addCommentByArticleId = (id, comment) => {
           status: 404,
           msg: 'Article_id not found'
         });
+      } else {
+        return connection.insert(commentObj).into('comments').returning('*');
       }
-      return connection
-        .insert(commentObj)
-        .into('comments')
-        .returning('*')
-        .then((comment) => {
-          console.log(comment);
-          console.log(err);
-
-          return comment[0];
-        });
+    })
+    .then((comment) => {
+      console.log(comment);
+      return comment[0];
     });
 };
 
