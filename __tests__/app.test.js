@@ -6,7 +6,10 @@ beforeEach(() => connection.seed.run());
 afterAll(() => connection.destroy());
 
 describe('/api', () => {
-  describe('/topics', () => {
+  it('GET 200', () => {
+    return request(app).get('/api').expect(200);
+  });
+  describe.skip('/topics', () => {
     it('GET 200', () => {
       return request(app).get('/api/topics').expect(200);
     });
@@ -28,7 +31,7 @@ describe('/api', () => {
     });
   });
 
-  describe('/users/:username', () => {
+  describe.skip('/users/:username', () => {
     it('GET 200', () => {
       return request(app).get('/api/users/icellusedkars').expect(200);
     });
@@ -62,7 +65,7 @@ describe('/api', () => {
     });
   });
 
-  describe.only('/articles', () => {
+  describe.skip('/articles', () => {
     describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles').expect(200);
@@ -97,7 +100,7 @@ describe('/api', () => {
     });
   });
 
-  describe('/articles/:article_id', () => {
+  describe.skip('/articles/:article_id', () => {
     describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles/1').expect(200);
@@ -217,7 +220,7 @@ describe('/api', () => {
   });
 
   // the test block below is not finished, function not finished
-  describe('/articles/:article_id/comments', () => {
+  describe.skip('/articles/:article_id/comments', () => {
     describe.skip('POST', () => {
       it('POST 201', () => {
         return request(app)
