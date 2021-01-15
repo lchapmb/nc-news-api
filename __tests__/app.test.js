@@ -213,11 +213,11 @@ describe('/api', () => {
         return request(app)
           .post('/api/articles/999/comments')
           .send({ username: 'icellusedkars', body: 'generic comment' })
-          .expect(404);
-        // .then((body) => {
-        //   console.log(body.text);
-        //   expect(body.text.msg).toBe('Article_id not found');
-        // });
+          .expect(404)
+          .then(({ body }) => {
+            console.log(body.msg);
+            expect(body.msg).toBe('Article_id not found');
+          });
       });
       // incorrect username
       // no body
