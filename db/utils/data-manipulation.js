@@ -1,6 +1,4 @@
-// extract any functions you are using to manipulate your data, into this file
-
-formatTimestamp = (data) => {
+const formatTimestamp = (data) => {
   const finalArr = [];
 
   if (data.length) {
@@ -14,7 +12,7 @@ formatTimestamp = (data) => {
   return finalArr;
 };
 
-createLookup = (array) => {
+const createLookup = (array) => {
   const lookup = {};
   if (array.length) {
     array.forEach((item) => {
@@ -24,7 +22,7 @@ createLookup = (array) => {
   return lookup;
 };
 
-formatComment = (data, lookup) => {
+const formatComment = (data, lookup) => {
   const item = formatTimestamp(data);
   if (item.length) {
     item.forEach((comment) => {
