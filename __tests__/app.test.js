@@ -208,11 +208,11 @@ describe('/api', () => {
           .send({ inc_votes: -1 })
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe('Invalid article_id');
+            expect(body.msg).toBe('Invalid id');
           });
       });
-      // the test block below is not finished, function not finished
 
+      // the test block below is not finished, function not finished
       describe.skip('DELETE', () => {
         it('DELETE 204', () => {
           return request(app).delete('/api/articles/1').expect(204);
