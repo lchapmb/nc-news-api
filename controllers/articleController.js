@@ -10,7 +10,6 @@ const {
 exports.getArticleById = (req, res, next) => {
   fetchArticleById(req)
     .then((article) => {
-      //console.log('in the controller');
       res.status(200).send({ article });
     })
     .catch(next);
@@ -21,7 +20,6 @@ exports.patchArticleById = (req, res, next) => {
   const id = req.params.article_id;
   amendArticleById(id, inc_votes)
     .then((article) => {
-      //console.log('in the controller');
       res.status(200).send({ article });
     })
     .catch(next);
@@ -33,7 +31,6 @@ exports.postCommentByArticleId = (req, res, next) => {
 
   addCommentByArticleId(id, comment)
     .then((comment) => {
-      console.log('in the controller');
       res.status(201).send({ comment });
     })
     .catch(next);
@@ -50,7 +47,6 @@ exports.deleteArticleById = (req, res, next) => {
 };
 
 exports.getCommentsByArticle = (req, res, next) => {
-  console.log('in the controller');
   const id = req.params.article_id;
   fetchCommentsByArticle(id)
     .then((comments) => {

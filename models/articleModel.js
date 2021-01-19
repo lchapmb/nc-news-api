@@ -1,7 +1,6 @@
 const connection = require('../db/connection');
 
 exports.fetchArticleById = (req) => {
-  //console.log('in the model');
   const articleId = req.params.article_id;
 
   if (/\D/.test(articleId)) {
@@ -44,8 +43,6 @@ exports.fetchAllArticles = () => {
 };
 
 exports.amendArticleById = (id, inc_votes = 0) => {
-  //console.log('in the model');
-
   return connection
     .from('articles')
     .where('article_id', '=', id)
@@ -73,7 +70,6 @@ exports.removeArticleById = (id) => {
 };
 
 exports.addCommentByArticleId = (id, comment) => {
-  console.log('in the model');
   const commentObj = {};
   commentObj.author = comment.username;
   commentObj.body = comment.body;
@@ -94,13 +90,11 @@ exports.addCommentByArticleId = (id, comment) => {
       }
     })
     .then((comment) => {
-      console.log(comment);
       return comment[0];
     });
 };
 
 exports.fetchCommentsByArticle = (id) => {
-  console.log('in the model');
   return connection
     .select('*')
     .from('comments')
