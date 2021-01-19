@@ -60,13 +60,11 @@ exports.amendArticleById = (id, inc_votes = 0) => {
 };
 
 exports.removeArticleById = (id) => {
-  return connection
-    .from('articles')
-    .where('article_id', '=', id)
-    .del()
-    .then(() => {
-      // something
-    });
+  console.log('in model');
+  return connection.from('articles').where('article_id', '=', id).del();
+  // .then(() => {
+  //   // something
+  // });
 };
 
 exports.addCommentByArticleId = (id, comment) => {

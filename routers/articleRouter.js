@@ -10,10 +10,14 @@ const {
 } = require('../controllers/articleController');
 
 articleRouter.route('/').get(getAllArticles);
-articleRouter.route('/:article_id').get(getArticleById);
-articleRouter.route('/:article_id').patch(patchArticleById);
-articleRouter.route('/:article_id').delete(deleteArticleById);
-articleRouter.route('/:article_id/comments').post(postCommentByArticleId);
-articleRouter.route('/:article_id/comments').get(getCommentsByArticle);
+articleRouter
+  .route('/:article_id')
+  .get(getArticleById)
+  .patch(patchArticleById)
+  .delete(deleteArticleById);
+articleRouter
+  .route('/:article_id/comments')
+  .post(postCommentByArticleId)
+  .get(getCommentsByArticle);
 
 module.exports = articleRouter;

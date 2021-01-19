@@ -213,7 +213,7 @@ describe('/api', () => {
       });
 
       // the test block below is not finished, function not finished
-      describe.skip('DELETE', () => {
+      describe.only('DELETE', () => {
         it('DELETE 204', () => {
           return request(app).delete('/api/articles/1').expect(204);
         });
@@ -222,7 +222,7 @@ describe('/api', () => {
   });
 
   // the test block below is not finished, function not finished
-  describe('/articles/:article_id/comments', () => {
+  describe.skip('/articles/:article_id/comments', () => {
     describe('POST', () => {
       it('POST 201', () => {
         return request(app)

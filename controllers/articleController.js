@@ -38,10 +38,11 @@ exports.postCommentByArticleId = (req, res, next) => {
 
 exports.deleteArticleById = (req, res, next) => {
   const id = req.params.article_id;
+  console.log('in controller');
 
   removeArticleById(id)
-    .then(() => {
-      res.status(204);
+    .then((id) => {
+      res.status(204).end();
     })
     .catch(next);
 };
