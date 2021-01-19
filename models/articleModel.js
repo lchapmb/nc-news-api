@@ -1,8 +1,6 @@
 const connection = require('../db/connection');
 
-exports.fetchArticleById = (req) => {
-  const articleId = req.params.article_id;
-
+exports.fetchArticleById = (articleId) => {
   if (/\D/.test(articleId)) {
     return Promise.reject({
       status: 400,
@@ -60,11 +58,7 @@ exports.amendArticleById = (id, inc_votes = 0) => {
 };
 
 exports.removeArticleById = (id) => {
-  console.log('in model');
   return connection.from('articles').where('article_id', '=', id).del();
-  // .then(() => {
-  //   // something
-  // });
 };
 
 exports.addCommentByArticleId = (id, comment) => {

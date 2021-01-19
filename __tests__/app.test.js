@@ -211,12 +211,11 @@ describe('/api', () => {
             expect(body.msg).toBe('Invalid id');
           });
       });
-
-      // the test block below is not finished, function not finished
-      describe.only('DELETE', () => {
-        it('DELETE 204', () => {
-          return request(app).delete('/api/articles/1').expect(204);
-        });
+    });
+    // the test block below is not finished, function not finished
+    describe('DELETE', () => {
+      it('DELETE 204', () => {
+        return request(app).delete('/api/articles/1').expect(204);
       });
     });
   });

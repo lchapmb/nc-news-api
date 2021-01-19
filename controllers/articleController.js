@@ -8,7 +8,9 @@ const {
 } = require('../models/articleModel');
 
 exports.getArticleById = (req, res, next) => {
-  fetchArticleById(req)
+  const articleId = req.params.article_id;
+
+  fetchArticleById(articleId)
     .then((article) => {
       res.status(200).send({ article });
     })
@@ -38,7 +40,6 @@ exports.postCommentByArticleId = (req, res, next) => {
 
 exports.deleteArticleById = (req, res, next) => {
   const id = req.params.article_id;
-  console.log('in controller');
 
   removeArticleById(id)
     .then((id) => {
