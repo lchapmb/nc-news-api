@@ -15,10 +15,12 @@ articleRouter
   .route('/:article_id')
   .get(getArticleById)
   .patch(patchArticleById)
-  .delete(deleteArticleById);
+  .delete(deleteArticleById)
+  .all(send405Error);
 articleRouter
   .route('/:article_id/comments')
   .post(postCommentByArticleId)
-  .get(getCommentsByArticle);
+  .get(getCommentsByArticle)
+  .all(send405Error);
 
 module.exports = articleRouter;

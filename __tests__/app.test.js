@@ -265,6 +265,7 @@ describe('/api', () => {
           });
       });
     });
+
     describe('DELETE', () => {
       it('DELETE 204', () => {
         return request(app).delete('/api/articles/1').expect(204);
@@ -277,13 +278,28 @@ describe('/api', () => {
             expect(body.msg).toBe('Article_id not found');
           });
       });
-      it('GET 400 - when given an article_id in an invalid format (ie not a number), gives message "Invalid id"', () => {
+      it('DELETE 400 - when given an article_id in an invalid format (ie not a number), gives message "Invalid id"', () => {
         return request(app)
           .delete('/api/articles/not-a-number')
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe('Invalid id');
           });
+      });
+    });
+
+    describe('INVALID METHODS', () => {
+      test('status:405', () => {
+        const invalidMethods = ['put', 'post'];
+        const methodPromises = invalidMethods.map((method) => {
+          return request(app)
+            [method]('/api/articles/1')
+            .expect(405)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe('method not allowed');
+            });
+        });
+        return Promise.all(methodPromises);
       });
     });
   });
@@ -406,6 +422,21 @@ describe('/api', () => {
           .then(({ body }) => {
             expect(body.msg).toBe('Article_id not found');
           });
+      });
+    });
+
+    describe('INVALID METHODS', () => {
+      test('status:405', () => {
+        const invalidMethods = ['put', 'delete', 'patch'];
+        const methodPromises = invalidMethods.map((method) => {
+          return request(app)
+            [method]('/api/articles/1/comments')
+            .expect(405)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe('method not allowed');
+            });
+        });
+        return Promise.all(methodPromises);
       });
     });
   });
