@@ -104,7 +104,7 @@ describe('/api', () => {
     });
   });
 
-  describe('/articles', () => {
+  describe.only('/articles', () => {
     describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles').expect(200);
@@ -135,6 +135,21 @@ describe('/api', () => {
               ].sort()
             );
           });
+      });
+    });
+
+    describe('POST', () => {
+      it('POST 201', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: 'Why my app is the best',
+            topic: 'paper',
+            author: 'lurker',
+            body:
+              'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
+          })
+          .expect(201);
       });
     });
 
