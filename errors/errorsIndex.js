@@ -4,7 +4,6 @@ exports.customErrorHandler = (err, req, res, next) => {
 };
 
 exports.psqlErrorHandler = (err, req, res, next) => {
-  console.log(err.code);
   if (err.code === '22P02') {
     // 	22P02 = invalid_text_representation
     res.status(400).send({ msg: 'Invalid id' });
@@ -22,4 +21,8 @@ exports.psqlErrorHandler = (err, req, res, next) => {
 exports.handleServerError = (err, req, res, next) => {
   console.log(err);
   res.status(500).send({ msg: 'Server error, see log' });
+};
+
+exports.send405Error = (req, res, next) => {
+  res.status(405).send({ msg: 'method not allowed' });
 };

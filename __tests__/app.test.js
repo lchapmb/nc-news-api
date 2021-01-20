@@ -1,3 +1,4 @@
+const { TestScheduler } = require('jest');
 const request = require('supertest');
 const app = require('../app');
 const connection = require('../db/connection');
@@ -6,28 +7,49 @@ beforeEach(() => connection.seed.run());
 afterAll(() => connection.destroy());
 
 describe('/api', () => {
+  // get api in progress
   it('GET 200', () => {
     return request(app).get('/api').expect(200);
   });
   describe('/topics', () => {
-    it('GET 200', () => {
-      return request(app).get('/api/topics').expect(200);
+    describe('GET', () => {
+      it('GET 200', () => {
+        return request(app).get('/api/topics').expect(200);
+      });
+      it('GET 200 - returns an object with key of topics and an array of topics', () => {
+        return request(app)
+          .get('/api/topics')
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.topics.length).toBe(3);
+          });
+      });
+      it('GET 200 - each returned object in the array has a key of slug and a key of description', () => {
+        return request(app)
+          .get('/api/topics')
+          .expect(200)
+          .then(({ body }) => {
+            expect(Object.keys(body.topics[0])).toEqual([
+              'slug',
+              'description'
+            ]);
+          });
+      });
     });
-    it('GET 200 - returns an object with key of topics and an array of topics', () => {
-      return request(app)
-        .get('/api/topics')
-        .expect(200)
-        .then(({ body }) => {
-          expect(body.topics.length).toBe(3);
+
+    describe('INVALID METHODS', () => {
+      test('status:405', () => {
+        const invalidMethods = ['patch', 'put', 'delete', 'post'];
+        const methodPromises = invalidMethods.map((method) => {
+          return request(app)
+            [method]('/api/topics')
+            .expect(405)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe('method not allowed');
+            });
         });
-    });
-    it('GET 200 - each returned object in the array has a key of slug and a key of description', () => {
-      return request(app)
-        .get('/api/topics')
-        .expect(200)
-        .then(({ body }) => {
-          expect(Object.keys(body.topics[0])).toEqual(['slug', 'description']);
-        });
+        return Promise.all(methodPromises);
+      });
     });
   });
 
