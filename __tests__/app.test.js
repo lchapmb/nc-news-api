@@ -235,7 +235,7 @@ describe('/api', () => {
   });
 
   describe('/articles/:article_id/comments', () => {
-    describe.only('POST', () => {
+    describe('POST', () => {
       it('POST 201', () => {
         return request(app)
           .post('/api/articles/1/comments')
@@ -300,13 +300,21 @@ describe('/api', () => {
       it('POST 400 - when passed no body', () => {
         return request(app)
           .post('/api/articles/1/comments')
-          .send({ username: 'icellusedkars', body: '' })
+          .send({ username: 'icellusedkars' })
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe('Missing body');
+            expect(body.msg).toBe('Missing mandatory field');
           });
       });
-      // no body
+      it('POST 400 - when passed no username', () => {
+        return request(app)
+          .post('/api/articles/1/comments')
+          .send({ body: 'generic comment' })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Missing mandatory field');
+          });
+      });
     });
 
     describe('GET', () => {
