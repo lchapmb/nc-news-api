@@ -8,8 +8,9 @@ const {
   getCommentsByArticle,
   getAllArticles
 } = require('../controllers/articleController');
+const { send405Error } = require('../errors/errorsIndex');
 
-articleRouter.route('/').get(getAllArticles);
+articleRouter.route('/').get(getAllArticles).all(send405Error);
 articleRouter
   .route('/:article_id')
   .get(getArticleById)

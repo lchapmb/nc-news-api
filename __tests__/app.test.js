@@ -54,36 +54,53 @@ describe('/api', () => {
   });
 
   describe('/users/:username', () => {
-    it('GET 200', () => {
-      return request(app).get('/api/users/icellusedkars').expect(200);
+    describe('GET', () => {
+      it('GET 200', () => {
+        return request(app).get('/api/users/icellusedkars').expect(200);
+      });
+      it('GET 200 - returns an object with key of user and a value containing the user object', () => {
+        return request(app)
+          .get('/api/users/icellusedkars')
+          .expect(200)
+          .then(({ body }) => {
+            expect(Object.keys(body)).toEqual(['user']);
+          });
+      });
+      it('GET 200 - returns an object with key of user and a value containing the user object with keys of username, avatar_url, and name', () => {
+        return request(app)
+          .get('/api/users/icellusedkars')
+          .expect(200)
+          .then(({ body }) => {
+            expect(Object.keys(body.user)).toEqual([
+              'username',
+              'avatar_url',
+              'name'
+            ]);
+          });
+      });
+      it('GET 404 for an invalid username - msg sent "Invalid username"', () => {
+        return request(app)
+          .get('/api/users/icsellusedcars')
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid username');
+          });
+      });
     });
-    it('GET 200 - returns an object with key of user and a value containing the user object', () => {
-      return request(app)
-        .get('/api/users/icellusedkars')
-        .expect(200)
-        .then(({ body }) => {
-          expect(Object.keys(body)).toEqual(['user']);
+
+    describe('INVALID METHODS', () => {
+      test('status:405', () => {
+        const invalidMethods = ['patch', 'put', 'delete', 'post'];
+        const methodPromises = invalidMethods.map((method) => {
+          return request(app)
+            [method]('/api/users/icsellusedcars')
+            .expect(405)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe('method not allowed');
+            });
         });
-    });
-    it('GET 200 - returns an object with key of user and a value containing the user object with keys of username, avatar_url, and name', () => {
-      return request(app)
-        .get('/api/users/icellusedkars')
-        .expect(200)
-        .then(({ body }) => {
-          expect(Object.keys(body.user)).toEqual([
-            'username',
-            'avatar_url',
-            'name'
-          ]);
-        });
-    });
-    it('GET 404 for an invalid username - msg sent "Invalid username"', () => {
-      return request(app)
-        .get('/api/users/icsellusedcars')
-        .expect(404)
-        .then(({ body }) => {
-          expect(body.msg).toBe('Invalid username');
-        });
+        return Promise.all(methodPromises);
+      });
     });
   });
 
@@ -118,6 +135,21 @@ describe('/api', () => {
               ].sort()
             );
           });
+      });
+    });
+
+    describe('INVALID METHODS', () => {
+      test('status:405', () => {
+        const invalidMethods = ['patch', 'put', 'delete'];
+        const methodPromises = invalidMethods.map((method) => {
+          return request(app)
+            [method]('/api/articles')
+            .expect(405)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe('method not allowed');
+            });
+        });
+        return Promise.all(methodPromises);
       });
     });
   });
