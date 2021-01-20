@@ -103,6 +103,11 @@ exports.fetchCommentsByArticle = (id) => {
     .from('comments')
     .where('article_id', '=', id)
     .then((comments) => {
+      if (!comments.length) {
+        return this.fetchArticleById(id).then((article) => {
+          if (article) return comments;
+        });
+      }
       return comments;
     });
 };

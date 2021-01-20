@@ -9,7 +9,6 @@ describe('/api', () => {
   it('GET 200', () => {
     return request(app).get('/api').expect(200);
   });
-  //JSON describing all the available endpoints on your API
   describe('/topics', () => {
     it('GET 200', () => {
       return request(app).get('/api/topics').expect(200);
@@ -236,7 +235,7 @@ describe('/api', () => {
   });
 
   // the test block below is not finished, function not finished
-  describe.skip('/articles/:article_id/comments', () => {
+  describe('/articles/:article_id/comments', () => {
     describe('POST', () => {
       it('POST 201', () => {
         return request(app)
@@ -302,7 +301,7 @@ describe('/api', () => {
       // incorrect username
       // no body
     });
-    // the test block below is not finished, function not finished
+
     describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles/1/comments').expect(200);
@@ -315,16 +314,30 @@ describe('/api', () => {
             expect(body.comments.length).toBe(13);
           });
       });
-      it.skip('GET 400 - returns message "Invalid article_id" when passed an article_id which is not a number', () => {
+      it('GET 200 - returns no content when passed a valid article with no comments', () => {
         return request(app)
-          .get('/api/articles/185/comments')
-          .expect(400)
+          .get('/api/articles/4/comments')
+          .expect(200)
           .then(({ body }) => {
-            expect(body.msg).toBe('Invalid article_id');
+            expect(body.comments.length).toBe(0);
           });
       });
-      // invalid article_id
-      // not an article_id
+      it('GET 400 - returns message "Invalid id" when passed an article_id which is not a number', () => {
+        return request(app)
+          .get('/api/articles/kevin/comments')
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid id');
+          });
+      });
+      it('GET 404 - when passed an incorrect article_id', () => {
+        return request(app)
+          .get('/api/articles/185/comments')
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Article_id not found');
+          });
+      });
     });
   });
 });
