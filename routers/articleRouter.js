@@ -6,11 +6,16 @@ const {
   deleteArticleById,
   postCommentByArticleId,
   getCommentsByArticle,
-  getAllArticles
+  getAllArticles,
+  postArticle
 } = require('../controllers/articleController');
 const { send405Error } = require('../errors/errorsIndex');
 
-articleRouter.route('/').get(getAllArticles).all(send405Error);
+articleRouter
+  .route('/')
+  .get(getAllArticles)
+  .post(postArticle)
+  .all(send405Error);
 articleRouter
   .route('/:article_id')
   .get(getArticleById)

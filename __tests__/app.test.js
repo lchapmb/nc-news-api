@@ -151,6 +151,80 @@ describe('/api', () => {
           })
           .expect(201);
       });
+      it('POST 201 - returns an object with a key of article and a value containing the post article as an object', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: 'Why my app is the best',
+            topic: 'paper',
+            author: 'lurker',
+            body:
+              'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
+          })
+          .expect(201)
+          .then(({ body }) => {
+            expect(Object.keys(body)).toEqual(['article']);
+          });
+      });
+      it('POST 201 - returns an object with a key of article and a value containing the post article as an object with the expected keys', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: 'Why my app is the best',
+            topic: 'paper',
+            author: 'lurker',
+            body:
+              'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
+          })
+          .expect(201)
+          .then(({ body }) => {
+            expect(Object.keys(body.article).sort()).toEqual(
+              [
+                'author',
+                'title',
+                'article_id',
+                'body',
+                'topic',
+                'created_at',
+                'votes'
+              ].sort()
+            );
+          });
+      });
+      it('POST 201 - returned object contains title, topic, body, and author', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: 'Why my app is the best',
+            topic: 'paper',
+            author: 'lurker',
+            body:
+              'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
+          })
+          .expect(201)
+          .then(({ body }) => {
+            expect(body.article.title).toEqual('Why my app is the best');
+            expect(body.article.topic).toEqual('paper');
+            expect(body.article.author).toEqual('lurker');
+            expect(body.article.body).toEqual(
+              'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
+            );
+          });
+      });
+      it('POST 400 - when passed an invalid username as an author', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: 'Why my app is the best',
+            topic: 'paper',
+            author: 'someguy',
+            body:
+              'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
+          })
+          .expect(400);
+      });
+      // check send article object has necessary keys
+      // check keys have values
     });
 
     describe('INVALID METHODS', () => {

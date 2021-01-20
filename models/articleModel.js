@@ -114,3 +114,13 @@ exports.fetchCommentsByArticle = (id) => {
       return comments;
     });
 };
+
+exports.addArticle = (newPost) => {
+  return connection
+    .insert(newPost)
+    .into('articles')
+    .returning('*')
+    .then((article) => {
+      return article[0];
+    });
+};
