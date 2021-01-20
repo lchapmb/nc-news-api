@@ -104,7 +104,7 @@ describe('/api', () => {
     });
   });
 
-  describe.only('/articles', () => {
+  describe('/articles', () => {
     describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles').expect(200);
@@ -221,7 +221,25 @@ describe('/api', () => {
             body:
               'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
           })
-          .expect(400);
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid entry in submitted field');
+          });
+      });
+      it('POST 400 - when passed an invalid topic', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: 'Why my app is the best',
+            topic: 'lalalala',
+            author: 'lurker',
+            body:
+              'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
+          })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid entry in submitted field');
+          });
       });
       // check send article object has necessary keys
       // check keys have values
@@ -453,7 +471,7 @@ describe('/api', () => {
           .send({ username: 'isellusedcars', body: 'generic comment' })
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe('Invalid username');
+            expect(body.msg).toBe('Invalid entry in submitted field');
           });
       });
       it('POST 400 - when passed no body', () => {
