@@ -89,11 +89,14 @@ exports.addCommentByArticleId = (id, comment) => {
           msg: 'Article_id not found'
         });
       } else {
-        return connection.insert(commentObj).into('comments').returning('*');
+        return connection
+          .insert(commentObj)
+          .into('comments')
+          .returning('*')
+          .then((comment) => {
+            return comment[0];
+          });
       }
-    })
-    .then((comment) => {
-      return comment[0];
     });
 };
 

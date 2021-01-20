@@ -8,6 +8,10 @@ exports.psqlErrorHandler = (err, req, res, next) => {
     // 	22P02 = invalid_text_representation
     res.status(400).send({ msg: 'Invalid id' });
   }
+  if (err.code === '23503') {
+    // 23503 = foreign_key_violation
+    res.status(400).send({ msg: 'Invalid username' });
+  }
 };
 
 exports.handleServerError = (err, req, res, next) => {

@@ -234,9 +234,8 @@ describe('/api', () => {
     });
   });
 
-  // the test block below is not finished, function not finished
   describe('/articles/:article_id/comments', () => {
-    describe('POST', () => {
+    describe.only('POST', () => {
       it('POST 201', () => {
         return request(app)
           .post('/api/articles/1/comments')
@@ -248,9 +247,9 @@ describe('/api', () => {
           .post('/api/articles/1/comments')
           .send({ username: 'icellusedkars', body: 'generic comment' })
           .expect(201)
-          .then((res) => {
-            expect(res.body.comment.author).toEqual('icellusedkars');
-            expect(res.body.comment.body).toEqual('generic comment');
+          .then(({ body }) => {
+            expect(body.comment.author).toEqual('icellusedkars');
+            expect(body.comment.body).toEqual('generic comment');
           });
       });
       it('POST 201 - returns a comment object with keys comment_id, author, article_id, votes, created_at, and body', () => {
@@ -291,14 +290,22 @@ describe('/api', () => {
       });
       it('POST 400 - when passed an invalid username ', () => {
         return request(app)
-          .post('/api/articles/not-a-number/comments')
+          .post('/api/articles/1/comments')
           .send({ username: 'isellusedcars', body: 'generic comment' })
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe('Invalid id');
+            expect(body.msg).toBe('Invalid username');
           });
       });
-      // incorrect username
+      it('POST 400 - when passed no body', () => {
+        return request(app)
+          .post('/api/articles/1/comments')
+          .send({ username: 'icellusedkars', body: '' })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Missing body');
+          });
+      });
       // no body
     });
 
