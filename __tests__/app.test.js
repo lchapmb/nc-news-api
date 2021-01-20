@@ -216,6 +216,22 @@ describe('/api', () => {
       it('DELETE 204', () => {
         return request(app).delete('/api/articles/1').expect(204);
       });
+      it('DELETE 404 - returns 404 when given an article id which does not exist, gives message "Article_id not found"', () => {
+        return request(app)
+          .delete('/api/articles/99')
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Article_id not found');
+          });
+      });
+      it('GET 400 - when given an article_id in an invalid format (ie not a number), gives message "Invalid id"', () => {
+        return request(app)
+          .delete('/api/articles/not-a-number')
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid id');
+          });
+      });
     });
   });
 

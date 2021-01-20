@@ -58,7 +58,18 @@ exports.amendArticleById = (id, inc_votes = 0) => {
 };
 
 exports.removeArticleById = (id) => {
-  return connection.from('articles').where('article_id', '=', id).del();
+  return connection
+    .from('articles')
+    .where('article_id', '=', id)
+    .del()
+    .then((delCount) => {
+      if (!delCount) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Article_id not found'
+        });
+      }
+    });
 };
 
 exports.addCommentByArticleId = (id, comment) => {
