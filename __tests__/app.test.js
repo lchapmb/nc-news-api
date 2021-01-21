@@ -116,8 +116,44 @@ describe('/api', () => {
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe(
-              'Submitted value in field already exists, must be unique'
+              'Submitted field must contain unique information: Key (slug)=(cats) already exists.'
             );
+          });
+      });
+      it('POST 400 - when passed a topic description which already exists', () => {
+        return request(app)
+          .post('/api/topics')
+          .send({
+            description: 'Not dogs',
+            slug: 'notCats'
+          })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe(
+              'Submitted field must contain unique information: Key (description)=(Not dogs) already exists.'
+            );
+          });
+      });
+      it('POST 400 - when passed an object which is missing description key', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            slug: 'nouveau'
+          })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Missing mandatory field');
+          });
+      });
+      it('POST 400 - when passed an object which is missing slug key', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            description: 'Another manic Monday'
+          })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Missing mandatory field');
           });
       });
     });

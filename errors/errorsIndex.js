@@ -10,14 +10,15 @@ exports.psqlErrorHandler = (err, req, res, next) => {
   } else if (err.code === '23503') {
     // 23503 = foreign_key_violation
     res.status(400).send({ msg: 'Invalid entry in submitted field' });
-  } else if (err.code === '23502') {
+  } else if (err.code === '23502' || err.code === '42703') {
     // 23502 = not_null_violation
+    // 42703 = 	undefined_column
     res.status(400).send({ msg: 'Missing mandatory field' });
   } else if (err.code === '23505') {
     // 23505 = unique_violation
-    res
-      .status(400)
-      .send({ msg: 'Submitted value in field already exists, must be unique' });
+    res.status(400).send({
+      msg: `Submitted field must contain unique information: ${err.detail}`
+    });
   } else {
     console.log(err.code);
   }
