@@ -142,7 +142,7 @@ describe('/api', () => {
           })
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe('Missing mandatory field');
+            expect(body.msg).toBe('Invalid or missing field in request');
           });
       });
       it('POST 400 - when passed an object which is missing slug key', () => {
@@ -153,7 +153,7 @@ describe('/api', () => {
           })
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe('Missing mandatory field');
+            expect(body.msg).toBe('Invalid or missing field in request');
           });
       });
     });
@@ -655,7 +655,7 @@ describe('/api', () => {
       });
     });
 
-    describe.only('GET', () => {
+    describe('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles/1/comments').expect(200);
       });
@@ -715,6 +715,14 @@ describe('/api', () => {
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe('Article_id not found');
+          });
+      });
+      it('GET 400 - when given an invalid column to sort by', () => {
+        return request(app)
+          .get('/api/articles/1/comments?sort_by=imagination')
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid or missing field in request');
           });
       });
     });
