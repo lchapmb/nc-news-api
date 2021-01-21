@@ -496,7 +496,7 @@ describe('/api', () => {
             expect(res.body.article.votes).toEqual(101);
           });
       });
-      it('PATCH 200 - responds with patched article object when given parameter to alter vote { inc_votes: newVote } whose value is negative', () => {
+      it('PATCH 200 - responds with updated article object when given parameter to alter vote { inc_votes: newVote } whose value is negative', () => {
         return request(app)
           .patch('/api/articles/1')
           .send({ inc_votes: -1 })
@@ -655,7 +655,7 @@ describe('/api', () => {
       });
     });
 
-    describe('GET', () => {
+    describe.only('GET', () => {
       it('GET 200', () => {
         return request(app).get('/api/articles/1/comments').expect(200);
       });
@@ -673,6 +673,24 @@ describe('/api', () => {
           .expect(200)
           .then(({ body }) => {
             expect(body.comments.length).toBe(0);
+          });
+      });
+      it('GET 200 - returned comment objects have keys of comment_id, votes, created_at, author, and body', () => {
+        return request(app)
+          .get('/api/articles/1/comments')
+          .expect(200)
+          .then(({ body }) => {
+            expect(Object.keys(body.comments[0]).sort()).toEqual(
+              ['comment_id', 'votes', 'created_at', 'author', 'body'].sort()
+            );
+          });
+      });
+      it('GET 200 - returned comments are sorted by created_at by default', () => {
+        return request(app)
+          .get('/api/articles/1/comments')
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comments).toBeSortedBy('created_at');
           });
       });
       it('GET 400 - returns message "Invalid id" when passed an article_id which is not a number', () => {

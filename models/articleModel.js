@@ -105,13 +105,24 @@ exports.fetchCommentsByArticle = (id) => {
     .select('*')
     .from('comments')
     .where('article_id', '=', id)
+    .orderBy('created_at', 'asc')
     .then((comments) => {
+      const formattedCommentsArr = [];
+      comments.forEach((comment) => {
+        const commentObj = {};
+        commentObj.comment_id = comment.comment_id;
+        commentObj.votes = comment.votes;
+        commentObj.created_at = comment.created_at;
+        commentObj.author = comment.author;
+        commentObj.body = comment.body;
+        formattedCommentsArr.push(commentObj);
+      });
       if (!comments.length) {
         return this.fetchArticleById(id).then((article) => {
-          if (article) return comments;
+          if (article) return formattedCommentsArr;
         });
       }
-      return comments;
+      return formattedCommentsArr;
     });
 };
 
