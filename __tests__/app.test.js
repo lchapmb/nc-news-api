@@ -701,6 +701,26 @@ describe('/api', () => {
             expect(body.comments).toBeSortedBy('votes');
           });
       });
+      it('GET 200 - returned comments may be ordered asc or desc', () => {
+        return request(app)
+          .get('/api/articles/1/comments?order=desc')
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comments).toBeSortedBy('created_at', {
+              descending: true
+            });
+          });
+      });
+      it('GET 200 - returned comments may be sorted by a valid column and ordered asc or desc', () => {
+        return request(app)
+          .get('/api/articles/1/comments?sort_by=votes&order=desc')
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comments).toBeSortedBy('votes', {
+              descending: true
+            });
+          });
+      });
       it('GET 400 - returns message "Invalid id" when passed an article_id which is not a number', () => {
         return request(app)
           .get('/api/articles/kevin/comments')

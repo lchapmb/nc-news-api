@@ -100,12 +100,15 @@ exports.addCommentByArticleId = (id, comment) => {
     });
 };
 
-exports.fetchCommentsByArticle = (id, { sort_by = 'created_at' }) => {
+exports.fetchCommentsByArticle = (
+  id,
+  { sort_by = 'created_at', order = 'asc' }
+) => {
   return connection
     .select('comment_id', 'votes', 'created_at', 'author', 'body')
     .from('comments')
     .where('article_id', '=', id)
-    .orderBy(sort_by, 'asc')
+    .orderBy(sort_by, order)
     .then((comments) => {
       if (!comments.length) {
         return this.fetchArticleById(id).then((article) => {
