@@ -7,36 +7,52 @@ beforeEach(() => connection.seed.run());
 afterAll(() => connection.destroy());
 
 describe('/api', () => {
-  // get api in progress
-  it('GET 200', () => {
-    return request(app).get('/api').expect(200);
+  describe('GET', () => {
+    it('GET 200', () => {
+      return request(app).get('/api').expect(200);
+    });
+    it('GET 200 - returns an object with a key of endpoints', () => {
+      return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body)).toEqual(['endpoints']);
+        });
+    });
+    it('GET 200 - returns an object with an array of objects whose keys are route and availableMethods', () => {
+      return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body.endpoints[0])).toEqual([
+            'route',
+            'availableMethods'
+          ]);
+        });
+    });
+    it('GET 200 - returns a key of endpoints with a value of array containing objects for each route', () => {
+      return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.endpoints.length).toBe(6);
+        });
+    });
   });
-  it('GET 200 - returns an object with a key of endpoints', () => {
-    return request(app)
-      .get('/api')
-      .expect(200)
-      .then(({ body }) => {
-        expect(Object.keys(body)).toEqual(['endpoints']);
+
+  describe('INVALID METHODS', () => {
+    test('status:405', () => {
+      const invalidMethods = ['patch', 'put', 'delete', 'post'];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]('/api')
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe('method not allowed');
+          });
       });
-  });
-  it('GET 200 - returns an object with an array of objects whose keys are route and availableMethods', () => {
-    return request(app)
-      .get('/api')
-      .expect(200)
-      .then(({ body }) => {
-        expect(Object.keys(body.endpoints[0])).toEqual([
-          'route',
-          'availableMethods'
-        ]);
-      });
-  });
-  it('GET 200 - returns a key of endpoints with a value of array containing objects for each route', () => {
-    return request(app)
-      .get('/api')
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.endpoints.length).toBe(6);
-      });
+      return Promise.all(methodPromises);
+    });
   });
 
   describe('/topics', () => {
@@ -62,6 +78,18 @@ describe('/api', () => {
               'description'
             ]);
           });
+      });
+    });
+
+    describe('POST', () => {
+      it('POST 201', () => {
+        return request(app)
+          .post('/api/topics')
+          .send({
+            description: "It's brand new topic!",
+            slug: 'nouveau'
+          })
+          .expect(201);
       });
     });
 
