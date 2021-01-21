@@ -10,5 +10,11 @@ exports.fetchAllTopics = () => {
 };
 
 exports.addTopic = (topic) => {
-  return connection.insert(topic).into('topics').returning('*');
+  return connection
+    .insert(topic)
+    .into('topics')
+    .returning('*')
+    .then((topic) => {
+      return topic[0];
+    });
 };

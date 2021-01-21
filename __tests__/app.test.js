@@ -86,10 +86,39 @@ describe('/api', () => {
         return request(app)
           .post('/api/topics')
           .send({
-            description: "It's brand new topic!",
+            description: "It's a brand new topic!",
             slug: 'nouveau'
           })
           .expect(201);
+      });
+      it('POST 201 - returns an object with a key of topic, which has value of the topic object containing keys of slug and description', () => {
+        return request(app)
+          .post('/api/topics')
+          .send({
+            description: "It's a brand new topic!",
+            slug: 'nouveau'
+          })
+          .expect(201)
+          .then(({ body }) => {
+            expect(Object.keys(body)).toEqual(['topic']);
+            expect(Object.keys(body.topic).sort()).toEqual(
+              ['description', 'slug'].sort()
+            );
+          });
+      });
+      it('POST 400 - when passed a topic slug which already exists', () => {
+        return request(app)
+          .post('/api/topics')
+          .send({
+            description: "It's a brand new topic!",
+            slug: 'cats'
+          })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe(
+              'Submitted value in field already exists, must be unique'
+            );
+          });
       });
     });
 
