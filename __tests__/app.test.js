@@ -95,7 +95,7 @@ describe('/api', () => {
 
     describe('INVALID METHODS', () => {
       test('status:405', () => {
-        const invalidMethods = ['patch', 'put', 'delete', 'post'];
+        const invalidMethods = ['patch', 'put', 'delete'];
         const methodPromises = invalidMethods.map((method) => {
           return request(app)
             [method]('/api/topics')

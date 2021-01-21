@@ -16,7 +16,7 @@ apiRouter
     res.status(200).send({
       endpoints: [
         { route: '/api', availableMethods: ['GET'] },
-        { route: '/topics', availableMethods: ['GET'] },
+        { route: '/topics', availableMethods: ['GET', 'POST'] },
         { route: '/users/:username', availableMethods: ['GET'] },
         { route: '/articles', availableMethods: ['GET', 'POST'] },
         {

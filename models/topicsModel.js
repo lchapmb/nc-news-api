@@ -8,3 +8,7 @@ exports.fetchAllTopics = () => {
       return topics;
     });
 };
+
+exports.addTopic = (topic) => {
+  return connection.insert(topic).into('topics').returning('*');
+};
