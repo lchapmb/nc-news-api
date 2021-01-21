@@ -11,6 +11,34 @@ describe('/api', () => {
   it('GET 200', () => {
     return request(app).get('/api').expect(200);
   });
+  it('GET 200 - returns an object with a key of endpoints', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(({ body }) => {
+        expect(Object.keys(body)).toEqual(['endpoints']);
+      });
+  });
+  it('GET 200 - returns an object with an array of objects whose keys are route and availableMethods', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(({ body }) => {
+        expect(Object.keys(body.endpoints[0])).toEqual([
+          'route',
+          'availableMethods'
+        ]);
+      });
+  });
+  it('GET 200 - returns a key of endpoints with a value of array containing objects for each route', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.endpoints.length).toBe(6);
+      });
+  });
+
   describe('/topics', () => {
     describe('GET', () => {
       it('GET 200', () => {
@@ -241,8 +269,48 @@ describe('/api', () => {
             expect(body.msg).toBe('Invalid entry in submitted field');
           });
       });
-      // check send article object has necessary keys
-      // check keys have values
+      it('POST 400 - when passed no content in title', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: '',
+            topic: 'lalalala',
+            author: 'lurker',
+            body:
+              'As a pro lurker, I have seen many an app. As such, I can assure that my app is better than yours'
+          })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid entry in submitted field');
+          });
+      });
+      it('POST 400 - when passed no content in body', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: 'Some title',
+            topic: 'lalalala',
+            author: 'lurker',
+            body: 'This is a body'
+          })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid entry in submitted field');
+          });
+      });
+      it('POST 400 - when passed an object which is missing a key', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            topic: 'lalalala',
+            author: 'lurker',
+            body: 'This is a body'
+          })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Missing mandatory field');
+          });
+      });
     });
 
     describe('INVALID METHODS', () => {

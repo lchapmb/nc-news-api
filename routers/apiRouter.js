@@ -11,7 +11,22 @@ apiRouter.use('/comments', commentRouter);
 apiRouter.use('/users', usersRouter);
 
 apiRouter.get('/', (req, res) => {
-  res.status(200).send('api route');
+  res.status(200).send({
+    endpoints: [
+      { route: '/api', availableMethods: ['GET'] },
+      { route: '/topics', availableMethods: ['GET'] },
+      { route: '/users/:username', availableMethods: ['GET'] },
+      { route: '/articles', availableMethods: ['GET', 'POST'] },
+      {
+        route: '/articles/:article_id',
+        availableMethods: ['GET', 'PATCH', 'DELETE']
+      },
+      {
+        route: '/articles/:article_id/comments',
+        availableMethods: ['GET', 'POST']
+      }
+    ]
+  });
 });
 
 module.exports = apiRouter;
