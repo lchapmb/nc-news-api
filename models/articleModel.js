@@ -100,29 +100,19 @@ exports.addCommentByArticleId = (id, comment) => {
     });
 };
 
-exports.fetchCommentsByArticle = (id) => {
+exports.fetchCommentsByArticle = (id, { sort_by = 'created_at' }) => {
   return connection
-    .select('*')
+    .select('comment_id', 'votes', 'created_at', 'author', 'body')
     .from('comments')
     .where('article_id', '=', id)
-    .orderBy('created_at', 'asc')
+    .orderBy(sort_by, 'asc')
     .then((comments) => {
-      const formattedCommentsArr = [];
-      comments.forEach((comment) => {
-        const commentObj = {};
-        commentObj.comment_id = comment.comment_id;
-        commentObj.votes = comment.votes;
-        commentObj.created_at = comment.created_at;
-        commentObj.author = comment.author;
-        commentObj.body = comment.body;
-        formattedCommentsArr.push(commentObj);
-      });
       if (!comments.length) {
         return this.fetchArticleById(id).then((article) => {
-          if (article) return formattedCommentsArr;
+          if (article) return comments;
         });
       }
-      return formattedCommentsArr;
+      return comments;
     });
 };
 

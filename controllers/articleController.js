@@ -51,7 +51,8 @@ exports.deleteArticleById = (req, res, next) => {
 
 exports.getCommentsByArticle = (req, res, next) => {
   const id = req.params.article_id;
-  fetchCommentsByArticle(id)
+  const query = req.query;
+  fetchCommentsByArticle(id, query)
     .then((comments) => {
       res.status(200).send({ comments });
     })

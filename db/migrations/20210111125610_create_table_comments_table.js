@@ -11,7 +11,7 @@ exports.up = function (knex) {
       .integer('article_id')
       .references('articles.article_id')
       .onDelete('CASCADE');
-    commentTable.string('votes').defaultTo(0);
+    commentTable.integer('votes').defaultTo(0);
     commentTable.timestamp('created_at').defaultTo(knex.fn.now());
     commentTable.text('body').notNullable();
   });

@@ -693,6 +693,14 @@ describe('/api', () => {
             expect(body.comments).toBeSortedBy('created_at');
           });
       });
+      it('GET 200 - returned comments may be ordered by other columns when passed a valid column as a url sort_by', () => {
+        return request(app)
+          .get('/api/articles/1/comments?sort_by=votes')
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comments).toBeSortedBy('votes');
+          });
+      });
       it('GET 400 - returns message "Invalid id" when passed an article_id which is not a number', () => {
         return request(app)
           .get('/api/articles/kevin/comments')
