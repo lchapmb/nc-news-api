@@ -13,7 +13,5 @@ const dbConfig =
         }
       }
     : require('../knexfile');
-//const connection = knex(dbConfig);
 
-//module.exports = connection;
 module.exports = knex(dbConfig);
