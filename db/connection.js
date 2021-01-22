@@ -1,7 +1,7 @@
 const ENV = process.env.NODE_ENV || 'development';
 const knex = require('knex');
 
-const dbConfig = (dbConfig =
+const dbConfig =
   ENV === 'production'
     ? {
         client: 'pg',
@@ -12,8 +12,8 @@ const dbConfig = (dbConfig =
           }
         }
       }
-    : require('../knexfile'));
-const connection = knex(dbConfig);
+    : require('../knexfile');
+//const connection = knex(dbConfig);
 
 //module.exports = connection;
 module.exports = knex(dbConfig);
