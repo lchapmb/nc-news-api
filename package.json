@@ -2,7 +2,7 @@
   "name": "be-nc-news",
   "version": "1.0.0",
   "description": "bc-nc-news",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "knex seed:run",
@@ -10,14 +10,19 @@
     "migrate-make": "knex migrate:make",
     "migrate-latest": "knex migrate:latest",
     "migrate-rollback": "knex migrate:rollback",
-    "seed-all": "setup-dbs && seed"
+    "seed-all": "setup-dbs && seed",
+    "start": "node listen.js",
+    "dev": "nodemon listen.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/northcoders/be-nc-news.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "example",
+    "heroku"
+  ],
+  "author": "lchapmb",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/northcoders/be-nc-news/issues"
@@ -31,7 +36,15 @@
   "devDependencies": {
     "jest": "^26.6.3",
     "jest-sorted": "^1.0.8",
+    "nodemon": "^2.0.7",
     "supertest": "^6.0.1"
   },
-  "jest" : {"setupFilesAfterEnv": ["jest-sorted"]}
+  "jest": {
+    "setupFilesAfterEnv": [
+      "jest-sorted"
+    ]
+  },
+  "engine": {
+    "node": "14.11.0"
+  }
 }
