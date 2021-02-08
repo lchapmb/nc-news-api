@@ -6,7 +6,9 @@ const {
   psqlErrorHandler,
   handleServerError
 } = require('./errors/errorsIndex');
+const cors = require('cors')
 
+app.use(cors());
 app.use(express.json());
 app.use('/api', apiRouter);
 app.use(customErrorHandler);
