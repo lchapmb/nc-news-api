@@ -284,6 +284,42 @@ describe('/api', () => {
               expect(body.articles).toBeSortedBy('created_at');
             });
         });
+        it('GET 200 - returned articles may be ordered by other columns when passed a valid column as a url to sort_by', () => {
+          return request(app)
+            .get('/api/articles/?sort_by=votes')
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).toBeSortedBy('votes');
+            });
+        });
+        it('GET 200 - returned articles may be ordered asc or desc', () => {
+          return request(app)
+            .get('/api/articles/?order=desc')
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).toBeSortedBy('created_at', {
+                descending: true
+              });
+            });
+        });
+        it('GET 200 - returned articles may be sorted by a valid column and ordered asc or desc', () => {
+          return request(app)
+            .get('/api/articles/?sort_by=votes&order=desc')
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).toBeSortedBy('votes', {
+                descending: true
+              });
+            });
+        });
+        it('GET 400 - when given an invalid column to sort by', () => {
+          return request(app)
+            .get('/api/articles/1/comments?sort_by=imagination')
+            .expect(400)
+            .then(({ body }) => {
+              expect(body.msg).toBe('Invalid or missing field in request');
+            });
+        });
       })
     });
 
