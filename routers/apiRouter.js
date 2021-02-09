@@ -18,7 +18,7 @@ apiRouter
         { route: '/api', availableMethods: ['GET'] },
         { route: '/topics', availableMethods: ['GET', 'POST'] },
         { route: '/users/:username', availableMethods: ['GET'] },
-        { route: '/articles', availableMethods: ['GET', 'POST'] },
+        { route: '/articles', availableMethods: ['GET', 'POST'], avalableQueries: [{ query: 'topic', example: '/?topic=coding'}] },
         {
           route: '/articles/:article_id',
           availableMethods: ['GET', 'PATCH', 'DELETE']
