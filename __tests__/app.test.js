@@ -257,6 +257,25 @@ describe('/api', () => {
             );
           });
       });
+
+      describe('Queries', () => {
+        it('GET 200 - returned articles may be filtered by topic', () => {
+          return request(app)
+            .get('/api/articles/?topic=cats')
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles[0].topic).toBe('cats');
+            });
+        });
+        it('GET 400 - when passed a topic which does not exist', () => {
+          return request(app)
+            .get('/api/articles/?topic=unicorns')
+            .expect(400)
+            .then(({ body }) => {
+              expect(body.msg).toBe('Invalid or missing field in request');
+            });
+        });
+      })
     });
 
     describe('POST', () => {

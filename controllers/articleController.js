@@ -60,7 +60,8 @@ exports.getCommentsByArticle = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  fetchAllArticles()
+  const query = req.query;
+  fetchAllArticles(query)
     .then((articles) => {
       res.status(200).send({ articles });
     })

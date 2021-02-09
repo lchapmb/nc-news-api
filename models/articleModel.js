@@ -28,15 +28,25 @@ exports.fetchArticleById = (articleId) => {
   }
 };
 
-exports.fetchAllArticles = () => {
+exports.fetchAllArticles = ({topic}) => {
   return connection
     .select('articles.*')
     .from('articles')
     .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
     .count('comment_id AS comment_count')
     .groupBy('articles.article_id')
+    .modify((query) => {
+      if (topic) query.where({topic});
+    })
     .then((articles) => {
+      if (!articles.length) {
+        return Promise.reject({
+          status: 400,
+          msg: 'Invalid or missing field in request'
+        });
+      } else {
       return articles;
+      }
     });
 };
 
