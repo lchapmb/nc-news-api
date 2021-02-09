@@ -28,7 +28,11 @@ exports.fetchArticleById = (articleId) => {
   }
 };
 
-exports.fetchAllArticles = ({topic}) => {
+exports.fetchAllArticles = ({
+  topic,
+  sort_by = 'created_at',
+  order = 'asc'
+}) => {
   return connection
     .select('articles.*')
     .from('articles')
@@ -36,8 +40,9 @@ exports.fetchAllArticles = ({topic}) => {
     .count('comment_id AS comment_count')
     .groupBy('articles.article_id')
     .modify((query) => {
-      if (topic) query.where({topic});
+      if (topic) query.where({ topic });
     })
+    .orderBy(sort_by, order)
     .then((articles) => {
       if (!articles.length) {
         return Promise.reject({
@@ -45,7 +50,7 @@ exports.fetchAllArticles = ({topic}) => {
           msg: 'Invalid or missing field in request'
         });
       } else {
-      return articles;
+        return articles;
       }
     });
 };

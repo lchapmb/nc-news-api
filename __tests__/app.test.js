@@ -275,6 +275,15 @@ describe('/api', () => {
               expect(body.msg).toBe('Invalid or missing field in request');
             });
         });
+
+        it('GET 200 - returned articles are sorted by created_at by default', () => {
+          return request(app)
+            .get('/api/articles')
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).toBeSortedBy('created_at');
+            });
+        });
       })
     });
 
