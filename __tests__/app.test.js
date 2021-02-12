@@ -320,7 +320,7 @@ describe('/api', () => {
               expect(body.msg).toBe('Invalid or missing field in request');
             });
         });
-      })
+      });
     });
 
     describe('POST', () => {
@@ -636,7 +636,7 @@ describe('/api', () => {
     });
   });
 
-  describe('/articles/:article_id/comments', () => {
+  describe.only('/articles/:article_id/comments', () => {
     describe('POST', () => {
       it('POST 201', () => {
         return request(app)
@@ -811,9 +811,47 @@ describe('/api', () => {
       });
     });
 
+    describe('DELETE', () => {
+      it('DELETE 204', () => {
+        return request(app).delete('/api/articles/1/comments/12').expect(204);
+      });
+      it('DELETE 404 - returns 404 when given a comment id which does not exist, gives message "ID not found"', () => {
+        return request(app)
+          .delete('/api/articles/1/comments/200')
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe('ID not found');
+          });
+      });
+      it('DELETE 404 - returns 404 when given an article id which does not exist, gives message "ID not found"', () => {
+        return request(app)
+          .delete('/api/articles/70/comments/1')
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe('ID not found');
+          });
+      });
+      it('DELETE 400 - when given an article_id in an invalid format (ie not a number), gives message "Invalid id"', () => {
+        return request(app)
+          .delete('/api/articles/not-a-number/comments/1')
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid id');
+          });
+      });
+      it('DELETE 400 - when given a comment_id in an invalid format (ie not a number), gives message "Invalid id"', () => {
+        return request(app)
+          .delete('/api/articles/1/comments/scoop')
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid id');
+          });
+      });
+    });
+
     describe('INVALID METHODS', () => {
       test('status:405', () => {
-        const invalidMethods = ['put', 'delete', 'patch'];
+        const invalidMethods = ['put', 'patch'];
         const methodPromises = invalidMethods.map((method) => {
           return request(app)
             [method]('/api/articles/1/comments')

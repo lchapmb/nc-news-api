@@ -7,7 +7,8 @@ const {
   postCommentByArticleId,
   getCommentsByArticle,
   getAllArticles,
-  postArticle
+  postArticle,
+  deleteCommentById
 } = require('../controllers/articleController');
 const { send405Error } = require('../errors/errorsIndex');
 
@@ -26,6 +27,10 @@ articleRouter
   .route('/:article_id/comments')
   .post(postCommentByArticleId)
   .get(getCommentsByArticle)
+  .all(send405Error);
+articleRouter
+  .route('/:article_id/comments/:comment_id')
+  .delete(deleteCommentById)
   .all(send405Error);
 
 module.exports = articleRouter;

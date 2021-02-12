@@ -87,6 +87,22 @@ exports.removeArticleById = (id) => {
     });
 };
 
+exports.removeCommentById = (articleId, commentId) => {
+  return connection
+    .from('comments')
+    .where('comment_id', '=', commentId)
+    .andWhere('article_id', '=', articleId)
+    .del()
+    .then((delCount) => {
+      if (!delCount) {
+        return Promise.reject({
+          status: 404,
+          msg: 'ID not found'
+        });
+      }
+    });
+};
+
 exports.addCommentByArticleId = (id, comment) => {
   const commentObj = {};
   commentObj.author = comment.username;
