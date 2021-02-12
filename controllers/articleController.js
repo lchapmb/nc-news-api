@@ -56,7 +56,7 @@ exports.deleteCommentById = (req, res, next) => {
   const commentId = req.params.comment_id;
 
   removeCommentById(articleId, commentId)
-    .then((comment) => {
+    .then((commentCount) => {
       res.status(204).end();
     })
     .catch(next);
@@ -88,4 +88,16 @@ exports.postArticle = (req, res, next) => {
       res.status(201).send({ article });
     })
     .catch(next);
+};
+
+exports.patchCommentById = (req, res, next) => {
+  const inc_votes = req.body.inc_votes;
+  console.log(inc_votes);
+  console.log(req);
+
+  // amendCommentById(id, inc_votes);
+  // .then((article) => {
+  //   res.status(200).send({ comment });
+  // })
+  // .catch(next);
 };

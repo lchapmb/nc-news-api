@@ -849,9 +849,63 @@ describe('/api', () => {
       });
     });
 
+    describe('PATCH', () => {
+      // it('PATCH 200', () => {
+      //   return request(app)
+      //     .patch('/api/articles/1/comments/1')
+      //     .send({ inc_votes: 1 })
+      //     .expect(200);
+      // });
+      // it('PATCH 200 - responds with patched article object when given parameter to alter vote { inc_votes: newVote }', () => {
+      //   return request(app)
+      //     .patch('/api/articles/1')
+      //     .send({ inc_votes: 1 })
+      //     .expect(200)
+      //     .then((res) => {
+      //       expect(res.body.article.votes).toEqual(101);
+      //     });
+      // });
+      // it('PATCH 200 - responds with updated article object when given parameter to alter vote { inc_votes: newVote } whose value is negative', () => {
+      //   return request(app)
+      //     .patch('/api/articles/1')
+      //     .send({ inc_votes: -1 })
+      //     .expect(200)
+      //     .then((res) => {
+      //       expect(res.body.article.votes).toEqual(99);
+      //     });
+      // });
+      // it('PATCH 200 - responds with patched article object when no inc_votes passed', () => {
+      //   return request(app)
+      //     .patch('/api/articles/1')
+      //     .send({})
+      //     .expect(200)
+      //     .then((res) => {
+      //       expect(res.body.article.votes).toEqual(100);
+      //     });
+      // });
+      // it('PATCH 404  - responds with error message when attempting to make request to incorrect article_id', () => {
+      //   return request(app)
+      //     .patch('/api/articles/1000')
+      //     .send({ inc_votes: -1 })
+      //     .expect(404)
+      //     .then(({ body }) => {
+      //       expect(body.msg).toBe('Article_id not found');
+      //     });
+      // });
+      // it('PATCH 400  - responds with error message when attempting to make request to article_id which is not a number', () => {
+      //   return request(app)
+      //     .patch('/api/articles/not_an_id')
+      //     .send({ inc_votes: -1 })
+      //     .expect(400)
+      //     .then(({ body }) => {
+      //       expect(body.msg).toBe('Invalid id');
+      //     });
+      // });
+    });
+
     describe('INVALID METHODS', () => {
       test('status:405', () => {
-        const invalidMethods = ['put', 'patch'];
+        const invalidMethods = ['put'];
         const methodPromises = invalidMethods.map((method) => {
           return request(app)
             [method]('/api/articles/1/comments')
