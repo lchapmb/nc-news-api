@@ -9,9 +9,11 @@
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
+  "POST /api/topics": {},
+  "GET /users/:username": {},
   "GET /api/articles": {
     "description": "serves an array of all topics",
-    "queries": ["author", "topic", "sort_by", "order"],
+    "queries": ["topic", "sort_by", "order"],
     "exampleResponse": {
       "articles": [
         {
@@ -23,5 +25,11 @@
         }
       ]
     }
-  }
+  },
+  "POST /api/articles": {},
+  "GET /articles/:article_id": {},
+  "PATCH /articles/:article_id": {},
+  "DELETE /articles/:article_id": {},
+  "GET /articles/:article_id/comments": {},
+  "POST /articles/:article_id/comments": {}
 }
